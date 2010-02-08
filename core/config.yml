@@ -1,0 +1,9 @@
+sql:
+	driver: sqlite
+	dbname: my.db
+	#driver: mysql
+	#dbname: mydatabase
+	#password: mypassword
+	#user: myuser
+	#host: localhost
+	#port: 3306
