@@ -15,7 +15,7 @@
 			$loader= new Twig_Loader_Filesystem(
 					$server_dir .'/web/'. $controller .'/template/');
 			$this->twig= new Twig_Environment($loader, array(
-				'cache'=> $server_dir .'/core/twig/cache/'
+				'cache'=> $server_dir .'/tmp/twig/cache/'
 			));
 			
 			$this->controller = $controller;
