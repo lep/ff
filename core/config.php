@@ -42,8 +42,8 @@
 			self::_load();
 
 			$sql= self::_get(self::$config, 'sql', true, false);
-			$type=self::_get($sql, 'driver', true, false);
-			$dsn="$type:";
+			$driver=self::_get($sql, 'driver', true, false);
+			$dsn="$driver:";
 			
 			if($driver=='sqlite'){
 				$dsn.=self::_get($sql, 'dbname', true, false);

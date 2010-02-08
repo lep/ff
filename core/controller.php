@@ -9,7 +9,7 @@
 			$this->template->assign("dir", 
 						array('server'=>$server_dir, 'web'=>$web_dir));
 			
-			//$this->sql = sql();
+			$this->sql = sql();
 		}
 	}
 ?>

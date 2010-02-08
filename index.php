@@ -11,7 +11,8 @@ ini_set('display_errors',1);
 	include_once($server_dir."core/controller.php");
 	include_once($server_dir."core/spyc.php");
 	include_once($server_dir."core/dispatch.php");
-	include_once($server_dir."core/pdo-sql.php");
+	include_once($server_dir."core/sql.php");
+	include_once($server_dir."core/config.php");
 	try{
 		dispatcher::dispatchRequest();
 	}catch(Exception $e){

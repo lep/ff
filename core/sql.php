@@ -50,8 +50,8 @@ class sql-query
 		
 		function createQuery($query, $args){
 			#Nur ausführen, wenn wir weitere Parameter haben.
-			$query=preg_replace('_\{(\w[\w\d_]+)\}_', $
-								this->db_prefix .'\1', $query); 
+			$query=preg_replace('_\{(\w[\w\d_]+)\}_', 
+								$this->db_prefix .'\1', $query); 
 			if(sizeof($args)>0){
 				$offset=0;
 				$pos=0;
