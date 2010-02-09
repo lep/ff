@@ -1,5 +1,5 @@
 ﻿<?php
-
+	error_reporting(E_ALL);
 /*
 abstract class sql-escaper
 	abstract function escapeStr(str)
@@ -40,7 +40,7 @@ class sql-query
 			$sql_type=substr($dsn, 0, strpos($dsn, ':'));
 			$path=$server_dir .'/core/driver/'. $sql_type .'/.php';
 			if(!file_exists($path)){
-				throw new ErrorNotFound("Driver ". $sql_type ." not found");
+				throw new ErrorNotFound("Driver ". $sql_type ." not found with path: $path");
 			}
 			include_once $path;
 			$this->sql_instance=new $sql_type ();
