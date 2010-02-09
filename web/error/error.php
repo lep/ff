@@ -1,5 +1,9 @@
 <?php
 class error extends Controller{
+	function __construct(){
+		parent::__construct(controller::NOSQL);
+	}
+	
 	function notallowed($error, $trace){
 		$this->template->assign("title", "403 - Forbidden");
 		$this->template->assign("error", $error);
@@ -15,6 +19,16 @@ class error extends Controller{
 		$this->template->assign("referrer",@ $_SERVER['HTTP_REFERER']);
 		$this->template->output("error.tpl");
 	}
+	
+	function unkownexception($error, $trace){
+		$this->template->assign("title", "Unkown exception");
+		$this->template->assign("error", $error);
+		$this->template->assign("trace", $trace);
+		//FIXME check if referrer is set^
+		$this->template->assign("referrer", @$_SERVER['HTTP_REFERER']);
+		$this->template->output("error.tpl");
+	}
+	
 }
 
 ?>

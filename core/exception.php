@@ -19,8 +19,10 @@
 					array($e->getMessage(), $e->getTraceAsString()));
 			}
 			else{
-				die("Unhandled error: ".$e->getMessage()."\n".
-					$e->getTraceAsString());
+				#die("Unhandled error: ".$e->getMessage()."\n".
+				#	$e->getTraceAsString());
+				dispatcher::executeControllerAction("error", "unkownexception",
+					array($e->getMessage(), $e->getTraceAsString()));
 			}
 		}catch(Exception $e){
 			die("DOUBLEFAULT: ".$e->getMessage()."\n".

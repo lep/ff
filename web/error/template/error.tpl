@@ -3,16 +3,16 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html>
 	<head>
-		<title>{$title}</title>
+		<title>{{title}}</title>
 	<body>
-		<h1>{$title}</h1>
-		<p>{$error}</p>
-		<pre>{$trace}</pre>
+		<h1>{{title}}</h1>
+		<p>{{error}}</p>
+		<pre>{{trace}}</pre>
 		<p>
 			<a href="">Reload this page</a>
-		{if $referrer}
+		{%if referrer%}
 			<a href="{$referrer}">Go back to previous page</a>
-		{/if}
+		{%endif%}
 		</p>
 	</body>
 </html>
