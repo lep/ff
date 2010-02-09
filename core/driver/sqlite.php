@@ -1,8 +1,8 @@
 <?php
 
-	class sqlite extends sql{
+	class sqlite extends sql_escaper{
 		function escape($s){
-			return sqlite_escape_string($s);
+			return SQLite3::escapeString ($s);
 		}
 	}
 
