@@ -19,9 +19,9 @@ class error extends Controller{
 		$this->template->assign("referrer",@ $_SERVER['HTTP_REFERER']);
 		$this->template->output("error.tpl");
 	}
-	
+	//TODO: fix typo :)
 	function unkownexception($error, $trace){
-		$this->template->assign("title", "Unkown exception");
+		$this->template->assign("title", "Unknown exception");
 		$this->template->assign("error", $error);
 		$this->template->assign("trace", $trace);
 		//FIXME check if referrer is set^
