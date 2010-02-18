@@ -38,7 +38,7 @@ class sql-query
 			}
 			
 			$sql_type=substr($dsn, 0, strpos($dsn, ':'));
-			$path=$server_dir .'/core/driver/'. $sql_type .'/.php';
+			$path=$server_dir .'/core/driver/'. $sql_type .'.php';
 			if(!file_exists($path)){
 				throw new ErrorNotFound("Driver ". $sql_type ." not found with path: $path");
 			}
