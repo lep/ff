@@ -14,7 +14,7 @@
 							array('server'=>$server_dir, 'web'=>$web_dir));
 			}
 			if (($opts & controller::NOSQL) == 0){
-				$this->sql = sql();
+				$this->sql = sql($controllername);
 			}
 			
 		}
