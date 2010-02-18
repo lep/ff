@@ -6,6 +6,8 @@
 	nett und zu Gebrauchen...
 	*/
 
+	require_once $server_dir .'/lib/Yaml/sfYaml.php';
+
 	class ConfigException
 	extends Exception {}
 
@@ -18,7 +20,8 @@
 				if(! file_exists($server_dir .'/config.yml')){
 					throw new ErrorNotFound('Config not found');
 				}
-				self::$config=spyc_load_file($server_dir .'/config.yml');
+				self::$config=sfYaml::load($server_dir .'/config.yml');
+					#spyc_load_file($server_dir .'/config.yml');
 			}
 		}
 
