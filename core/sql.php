@@ -27,6 +27,21 @@ class sql-query
 		private $sql_instance =null;
 		private $db_prefix;
 		
+		public function escapeString($string)
+		{
+			return $this->sql_instance->escapeStr($string);
+		}
+		
+		public function escapeInt($int)
+		{
+			return $this->sql_instance->escapeInt($int);
+		}
+		
+		public function escapeFloat($float)
+		{
+			return $this->sql_instance->escapeFloat($float);
+		}
+		
 		function __construct($db_prefix, $dsn, 
 						$username ="", $password="", $driver_options=null)
 		{
