@@ -3,6 +3,7 @@
 
 	require_once $server_dir .'/lib/Twig/Autoloader.php';
 	Twig_Autoloader::register();
+
 	class Template{
 		private $data;
 		private $twig;
@@ -10,16 +11,25 @@
 
 		function __construct($controller){
 			global $server_dir;
+			
+			#print "Con $controller ";
+			
+			$this->controller = $controller;
+			$this->data=array();
+			
+			$path=array();
+			foreach(classHierachy($this->controller) as $class){
+				if($class!="controller")
+					$path[]= $server_dir .'/web/'. $class .'/template/';
+			}
+			print_r($path);
 
-			#TODO: add multiple directories
-			$loader= new Twig_Loader_Filesystem(
-					$server_dir .'/web/'. $controller .'/template/');
+			$loader= new Twig_Loader_Filesystem($path);
 			$this->twig= new Twig_Environment($loader, array(
 				'cache'=> $server_dir .'/tmp/twig/cache/'
 			));
 			
-			$this->controller = $controller;
-			$this->data=array();
+			
 		}
 
 		function assign($key, $value){
@@ -29,11 +39,11 @@
 		function output($file){
 			global $server_dir;
 			
-			$path= $server_dir .'/web/'. 
-					$this->controller .'/template/'. $file;
-			if(! file_exists($path)){
-				throw new ErrorNotFound("Template ". $file ." not found");
-			}
+			#$path= $server_dir .'/web/'. 
+			#		$this->controller .'/template/'. $file;
+			#if(! file_exists($path)){
+			#	throw new ErrorNotFound("Template ". $file ." not found");
+			#}
 			$template = $this->twig->loadTemplate($file);
 			echo $template->render($this->data);
 		}

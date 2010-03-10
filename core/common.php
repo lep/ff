@@ -33,4 +33,14 @@
 			throw new ErrorNotFound("File ". $f ." not found");
 		}
 	}
+	
+	function classHierachy($name){
+		$ret=array();
+		$r=new ReflectionClass($name);
+		do{
+			$ret[]= $r->getName();
+		}while( ($r=$r->getParentClass()) != null );
+		return $ret;
+	}
+
 ?>
