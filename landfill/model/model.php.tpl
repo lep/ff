@@ -128,6 +128,6 @@
 		}
 	}
 	{% endfor %}	
-	echo asd::fetch()->aGT(11)->bEQ("asd")->cEQ(true)->orderByBDesc()->orderByStrAsc()->all();
+	#echo asd::fetch()->aGT(11)->bEQ("asd")->cEQ(true)->orderByBDesc()->orderByStrAsc()->all();
 	echo "\n";
 ?>
