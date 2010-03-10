@@ -11,7 +11,7 @@
 		<p>
 			<a href="">Reload this page</a>
 		{%if referrer%}
-			<a href="{$referrer}">Go back to previous page</a>
+			<a href="{{referrer}}">Go back to previous page</a>
 		{%endif%}
 		</p>
 	</body>
