@@ -1,5 +1,4 @@
 from jinja2 import FunctionLoader, Environment
-import yaml
 
 #TODO:
 # - LIKE clause for strings
@@ -60,25 +59,3 @@ def render(data):
 		"operations": operations,
 		"orderable": orderable
 	})
-
-d = yaml.load(
-"""
-asd:
-    a:
-        type: int
-    b:
-        type: float
-        default: 0
-    c:
-        type: bool
-    str:
-        type: string
-        default: einstring
-"""
-)
-print render(d)
-
-
-"""
-	BashQuote->objects->idEQ($which)->get();
-"""

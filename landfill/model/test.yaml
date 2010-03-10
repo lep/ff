@@ -1,0 +1,6 @@
+table:
+    column:
+        type: int
+    asd:
+        type: string
+        default: 1
