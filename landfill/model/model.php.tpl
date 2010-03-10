@@ -5,16 +5,28 @@
 	class FETCH_{{tablename}}{
 		var $cond;
 		var $ord;
+		var $sql;
 		function __construct(){
 			$this->cond = array();
 			$this->ord = array();
+			$this->sql = sql({{prefix}});
 		}
 		{% for columnname in table%}
 			{% set column = table[columnname]%}
 			{% set type = column["type"]%}
 			{% for op in operations[type] %}
 				function {{columnname}}{{op}}($to){
-					$this->cond[]="$to {{operations[type][op]}} {{columnname}}";
+					$this->cond[]=$this->sql->
+					{% if type == "id"%}
+						escapeInt($to)
+					{% elif type == "int"%} 
+						escapeInt($to)
+					{% elif type == "string"%}
+						escapeString($to)
+					{% elif type == "float"%}
+						escapeFloat($to)
+					{% endif%}
+						."{{operations[type][op]}} {{columnname}}";
 					return $this;
 				}
 			{% endfor %}

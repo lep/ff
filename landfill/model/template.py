@@ -57,5 +57,6 @@ def render(data):
 	return template.render({
 		"tables": data, 
 		"operations": operations,
-		"orderable": orderable
+		"orderable": orderable,
+		"prefix": ""
 	})

@@ -5,36 +5,58 @@
 	class FETCH_table{
 		var $cond;
 		var $ord;
+		var $sql;
 		function __construct(){
 			$this->cond = array();
 			$this->ord = array();
+			$this->sql = sql();
 		}
 		
 			
 			
 			
 				function columnGE($to){
-					$this->cond[]="$to >= column";
+					$this->cond[]=$this->sql->
+					 
+						escapeInt($to)
+					
+						.">= column";
 					return $this;
 				}
 			
 				function columnGT($to){
-					$this->cond[]="$to > column";
+					$this->cond[]=$this->sql->
+					 
+						escapeInt($to)
+					
+						."> column";
 					return $this;
 				}
 			
 				function columnEQ($to){
-					$this->cond[]="$to = column";
+					$this->cond[]=$this->sql->
+					 
+						escapeInt($to)
+					
+						."= column";
 					return $this;
 				}
 			
 				function columnLT($to){
-					$this->cond[]="$to > column";
+					$this->cond[]=$this->sql->
+					 
+						escapeInt($to)
+					
+						."> column";
 					return $this;
 				}
 			
 				function columnLE($to){
-					$this->cond[]="$to <= column";
+					$this->cond[]=$this->sql->
+					 
+						escapeInt($to)
+					
+						."<= column";
 					return $this;
 				}
 			
@@ -54,7 +76,11 @@
 			
 			
 				function asdEQ($to){
-					$this->cond[]="$to = asd";
+					$this->cond[]=$this->sql->
+					
+						escapeString($to)
+					
+						."= asd";
 					return $this;
 				}
 			
@@ -156,6 +182,6 @@
 		}
 	}
 		
-	//echo asd::fetch()->aGT(11)->bEQ("asd")->cEQ(true)->orderByBDesc()->orderByStrAsc()->all();
+	echo asd::fetch()->aGT(11)->bEQ("asd")->cEQ(true)->orderByBDesc()->orderByStrAsc()->all();
 	echo "\n";
 ?>
