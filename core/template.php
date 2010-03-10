@@ -22,7 +22,7 @@
 				if($class!="controller")
 					$path[]= $server_dir .'/web/'. $class .'/template/';
 			}
-			print_r($path);
+			#print_r($path);
 
 			$loader= new Twig_Loader_Filesystem($path);
 			$this->twig= new Twig_Environment($loader, array(
