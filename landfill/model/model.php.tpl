@@ -46,6 +46,8 @@
 		{% endfor %}
 		
 		function where(){
+			$args=func_get_args();
+			$this->cond[]=$this->sql->createQuery(array_shift($args), $args);
 			return $this;
 		}
 		
@@ -130,6 +132,8 @@
 		}
 	}
 	{% endfor %}	
-	echo table::fetch()->asdEQ(11)->columnEQ("asd")->where("$s = $s", "ab", "'DROP TABLE")->all();
+
+	#echo asd::fetch()->aGT(11)->bEQ("asd")->cEQ(true)->orderByBDesc()->orderByStrAsc()->all();
+	echo table::fetch()->columnEQ(1)->where("%s = %d", "asd", 12)->all();
 	echo "\n";
 ?>
