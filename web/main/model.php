@@ -98,6 +98,8 @@
 		
 		
 		function where(){
+			$args=func_get_args();
+			$this->cond[]=$this->sql->createQuery(array_shift($args), $args);
 			return $this;
 		}
 		
@@ -183,5 +185,6 @@
 	}
 		
 	#echo asd::fetch()->aGT(11)->bEQ("asd")->cEQ(true)->orderByBDesc()->orderByStrAsc()->all();
+	echo table::fetch()->columnEQ(1)->where("%s = %d", "asd", 12)->all();
 	echo "\n";
 ?>
