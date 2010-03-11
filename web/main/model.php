@@ -1,3 +1,5 @@
+
+
 <?php
 	error_reporting(E_ALL);
 	
@@ -16,47 +18,47 @@
 			
 			
 				function columnGE($to){
-					$this->cond[]=$this->sql->
-					 
-						escapeInt($to)
-					
-						.">= column";
+					$this->cond[]=
+ 
+ 	$this->sql->escapeInt($to)
+
+.">= column";
 					return $this;
 				}
 			
 				function columnGT($to){
-					$this->cond[]=$this->sql->
-					 
-						escapeInt($to)
-					
-						."> column";
+					$this->cond[]=
+ 
+ 	$this->sql->escapeInt($to)
+
+."> column";
 					return $this;
 				}
 			
 				function columnEQ($to){
-					$this->cond[]=$this->sql->
-					 
-						escapeInt($to)
-					
-						."= column";
+					$this->cond[]=
+ 
+ 	$this->sql->escapeInt($to)
+
+."= column";
 					return $this;
 				}
 			
 				function columnLT($to){
-					$this->cond[]=$this->sql->
-					 
-						escapeInt($to)
-					
-						."> column";
+					$this->cond[]=
+ 
+ 	$this->sql->escapeInt($to)
+
+."> column";
 					return $this;
 				}
 			
 				function columnLE($to){
-					$this->cond[]=$this->sql->
-					 
-						escapeInt($to)
-					
-						."<= column";
+					$this->cond[]=
+ 
+ 	$this->sql->escapeInt($to)
+
+."<= column";
 					return $this;
 				}
 			
@@ -76,11 +78,11 @@
 			
 			
 				function asdEQ($to){
-					$this->cond[]=$this->sql->
-					
-						escapeString($to)
-					
-						."= asd";
+					$this->cond[]=
+
+	$this->sql->escapeString($to)
+
+."= asd";
 					return $this;
 				}
 			
@@ -98,6 +100,7 @@
 		
 		
 		function where(){
+			$this->cond[]=$this->sql->createQuery(array_shift(func_get_args()), func_get_args());
 			return $this;
 		}
 		
@@ -182,6 +185,6 @@
 		}
 	}
 		
-	#echo asd::fetch()->aGT(11)->bEQ("asd")->cEQ(true)->orderByBDesc()->orderByStrAsc()->all();
+	echo table::fetch()->asdEQ(11)->columnEQ("asd")->where("%s = %s", "ab", "'DROP TABLE")->all();
 	echo "\n";
 ?>
