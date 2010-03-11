@@ -138,7 +138,9 @@
 			    'LIMIT '.$limit;
 		}
 		function all(){
-			return $this->buildCompleteSelectClause();
+			$sql = $this->buildCompleteSelectClause();
+			echo $sql;
+			return $this->sql->query($sql);
 		}
 		
 	}
@@ -173,6 +175,23 @@
 				.")";
 		}
 		
+		static function createTable()
+		{
+			$sql = "CREATE TABLE (
+				
+					
+						column
+						INT
+						
+					,
+					
+						asd
+						INT
+						
+					
+				)";
+				sql()->query($sql);
+		}
 		
 		function save(){
 			if ($this->id != False)
@@ -185,9 +204,10 @@
 			return new FETCH_table();
 		}
 	}
-		
-
-	#echo asd::fetch()->aGT(11)->bEQ("asd")->cEQ(true)->orderByBDesc()->orderByStrAsc()->all();
-	echo table::fetch()->columnEQ(1)->where("%s = %d", "asd", 12)->all();
+	
+	#sql()->query("INSERSET GEQ table (column, asd) VAweFEEAWLUES ('1', '123afwr'))");
+	#echo asd::fetch()->aGT(11)->bEQ("asd")->cEQ(true)->orderByBDesc()->orderByStrAsc()->all()
+	print_r( table::fetch()/*->columnEQ(1)->where("%s = %d", "asd", 12)*/->all());
+	#table:: createTable();
 	echo "\n";
 ?>

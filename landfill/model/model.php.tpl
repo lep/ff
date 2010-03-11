@@ -84,7 +84,8 @@
 			    'LIMIT '.$limit;
 		}
 		function all(){
-			return $this->buildCompleteSelectClause();
+			$sql = $this->buildCompleteSelectClause();
+			return $this->sql->query($sql);
 		}
 		
 	}
@@ -119,6 +120,27 @@
 				.")";
 		}
 		
+		static function createTable()
+		{
+			$sql = "CREATE TABLE (
+				{% for columnname in table-%}
+					{% set column = table["column"]%}
+					{% set type = column["type"]%}
+						{{columnname}}
+						{% if type == "int"-%}
+							INT
+						{% elif type == "string"%}
+							TEXT
+						{% else %}
+							{{type}}
+						{%- endif %}
+					{% if not loop.last -%}
+					,
+					{%- endif %}
+				{%- endfor %}
+				)";
+				sql({{prefix}})->query($sql);
+		}
 		
 		function save(){
 			if ($this->id != False)
@@ -133,7 +155,8 @@
 	}
 	{% endfor %}	
 
-	#echo asd::fetch()->aGT(11)->bEQ("asd")->cEQ(true)->orderByBDesc()->orderByStrAsc()->all();
-	echo table::fetch()->columnEQ(1)->where("%s = %d", "asd", 12)->all();
+	#echo asd::fetch()->aGT(11)->bEQ("asd")->cEQ(true)->orderByBDesc()->orderByStrAsc()->all()
+	print_r table::fetch()->columnEQ(1)/*->where("%s = %d", "asd", 12)*/->all();
+	#table:: createTable();
 	echo "\n";
 ?>
