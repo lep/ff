@@ -30,10 +30,10 @@
 	abstract class sql_config extends config{
 		#TODO: add driver-options support
 		private static function _get($data, $name, $required, $f=true){
-			if(empty($data[$name]) && $required){
+			if(!isset($data[$name]) && $required){
 				#TODO: maybe use ErrorNotFound-exception?
 				throw new ConfigException("Required value ($name) not set");
-			}elseif(! empty($data[$name])){
+			}elseif(isset($data[$name])){
 				if($f)
 					return "$name=". $data[$name] .";";
 				else
