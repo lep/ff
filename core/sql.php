@@ -109,8 +109,8 @@ class sql-query
 			$statement = self::$pdo_instance->query($this->createQuery($q, $args));
 			if (!$statement)
 			{
-				print_r(self::$pdo_instance->errorInfo());
-				throw new SqlError("err");
+				$error= self::$pdo_instance->errorInfo();
+				throw new SqlError("Database query: ".$error[2]. "\nfor query: ".$q);
 			}
 			return $statement->fetchAll()/*->fetch(PDO::FETCH_ASSOC)*/;
 			
