@@ -142,6 +142,12 @@
 				sql({{prefix}})->query($sql);
 		}
 		
+		static function dropTable()
+		{
+			$sql = "DROP TABLE {{tablename}}";
+			sql("prefix")->query($sql);
+		}
+		
 		function save(){
 			if ($this->id != False)
 				$this->update();
@@ -154,7 +160,7 @@
 		}
 	}
 	{% endfor %}	
-
+	testtable::dropTable();
 	testtable::createTable();
 	
 	#print_r(sql()->query("INSERT INTO test (column, asd) VALUES ('1', '123afwr'))"));
