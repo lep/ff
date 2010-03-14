@@ -4,7 +4,7 @@
 	error_reporting(E_ALL);
 	
 	
-	class FETCH_table{
+	class FETCH_testtable{
 		var $cond;
 		var $ord;
 		var $sql;
@@ -117,7 +117,7 @@
 		}
 		
 		private function buildFromClause(){
-			return ' FROM {table}';
+			return ' FROM {testtable}';
 		}
 		
 		private function  buildCompleteSelectClause(){
@@ -139,13 +139,12 @@
 		}
 		function all(){
 			$sql = $this->buildCompleteSelectClause();
-			echo $sql;
 			return $this->sql->query($sql);
 		}
 		
 	}
 	
-	class table{
+	class testtable{
 		
 			var $column;
 		
@@ -168,7 +167,7 @@
 		}
 		
 		private function insert(){
-			return "INSERT INTO table(
+			return "INSERT INTO testtable(
 				
 				) VALUES ("
 						
@@ -177,7 +176,7 @@
 		
 		static function createTable()
 		{
-			$sql = "CREATE TABLE (
+			$sql = "CREATE TABLE testtable (
 				
 					
 						column
@@ -201,11 +200,12 @@
 		}
 		
 		static function fetch(){
-			return new FETCH_table();
+			return new FETCH_testtable();
 		}
 	}
-	
-	#table::createTable();
+		
+
+	testtable::createTable();
 	
 	#print_r(sql()->query("INSERT INTO test (column, asd) VALUES ('1', '123afwr'))"));
 	#print_r (sql()->query("SELECT * FROM TEST"));
