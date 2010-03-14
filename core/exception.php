@@ -8,6 +8,9 @@
 	class ErrorNotAllowed 
 		extends Exception{};
 
+	class SqlError
+		extends Exception{};
+
 	function HandleException($e){
 		try{
 			if ($e instanceof ErrorNotFound)

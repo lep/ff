@@ -23,12 +23,14 @@ operations = {
 	"int": operations_all,
 	"float": operations_all,
 	"datetime": operations_all,
+	"id": operations_all,
 	"string": operations_equal,
 	"bool": operations_equal,
 }
 
 orderable = {
 	"int": True,
+	"id": True,
 	"float": True,
 	"datetime": True,
 	"string": True,
@@ -49,7 +51,12 @@ def render(data):
 		with open("landfill/model/model.php.tpl", "r") as f:
 			content = f.read()
 		return content
-		
+	
+	for table in data.keys():
+		data[table]["id"] = {
+			"type": "id",
+			"default": False
+		}
 		
 	env = Environment(loader=FunctionLoader(template))
 	env.filters["phpvar"] = phpvar

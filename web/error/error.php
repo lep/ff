@@ -6,7 +6,7 @@ class error extends Controller{
 	
 	function notallowed($error, $trace){
 		$this->template->assign("title", "403 - Forbidden");
-		$this->template->assign("error", $error);
+		$this->template->assign("error", nl2br($error));
 		$this->template->assign("trace", $trace);
 		//FIXME check if referrer is set^
 		$this->template->assign("referrer", @$_SERVER['HTTP_REFERER']);
@@ -14,7 +14,7 @@ class error extends Controller{
 	}
 	function notfound($error, $trace){
 		$this->template->assign("title", "404 - Not found");
-		$this->template->assign("error", $error);
+		$this->template->assign("error", nl2br($error));
 		$this->template->assign("trace", $trace);
 		$this->template->assign("referrer",@ $_SERVER['HTTP_REFERER']);
 		$this->template->output("error.tpl");
@@ -22,7 +22,7 @@ class error extends Controller{
 	//TODO: fix typo :)
 	function unkownexception($error, $trace){
 		$this->template->assign("title", "Unknown exception");
-		$this->template->assign("error", $error);
+		$this->template->assign("error", nl2br($error));
 		$this->template->assign("trace", $trace);
 		//FIXME check if referrer is set^
 		$this->template->assign("referrer", @$_SERVER['HTTP_REFERER']);

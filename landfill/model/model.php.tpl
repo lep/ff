@@ -1,12 +1,12 @@
 {%macro escape(var, type) %}
 {% if type == "id"%}
-	$this->sql->escapeInt({{var}})
+	sql()->escapeInt({{var}})
 {% elif type == "int"%} 
- 	$this->sql->escapeInt({{var}})
+ 	sql()->escapeInt({{var}})
 {% elif type == "string"%}
-	$this->sql->escapeString({{var}})
+	sql()->escapeString({{var}})
 {% elif type == "float"%}
-	$this->sql->escapeFloat({{var}})
+	sql()->escapeFloat({{var}})
 {% endif%}
 {% endmacro%}
 
@@ -59,7 +59,10 @@
 		}
 		
 		private function buildWhereClause(){
-			return ' WHERE '.implode(' AND ', $this->cond);
+			if (count($this->cond)>0)
+				return ' WHERE '.implode(' AND ', $this->cond);
+			else 
+				return "";
 		}
 		
 		private function buildFromClause(){
@@ -104,20 +107,43 @@
 		}
 		
 		private function update(){
-			
+			echo "updates";
+			$sql = "UPDATE {{tablename}} SET
+			{% for columnname in table%}
+			{% set column = table[columnname]%}
+				{{columnname}} =" .$this->{{ columnname }}."
+				{% if not loop.last %}
+				,
+				{% endif %}
+			{% endfor %}
+			WHERE id = ".$this->id;
+			echo "update";
+			sql({{prefix}})->query($sql);
 		}
 		
 		private function insert(){
-			return "INSERT INTO {{tablename}}(
-				{{columns|join(",")}}
-				) VALUES ("
-				{% for columnname in columns%}
-					.$this->{{ columnname }}.
-					{% if not loop.last %}
-					.','.
+			echo "inserts";
+			$sql =  "INSERT INTO {{tablename}}(
+				{% for columnname in table %}
+					{% if columnname != "id" %}
+						{% if not loop.first -%}	
+						,
+						{%- endif %}
+						{{ columnname }}
+					{% endif %}
+				{% endfor %}
+				) VALUES (".
+				{% for columnname in table %}
+					{% if columnname != "id" %}
+						{% if not loop.first -%}	
+						','.
+						{%- endif %}
+						{{escape("$this->"+columnname, table[columnname]["type"])}}.
 					{% endif %}
 				{% endfor %}		
-				.")";
+				")";
+				echo "insert";
+			sql({{prefix}})->query($sql);
 		}
 		
 		static function createTable()
@@ -147,8 +173,15 @@
 			$sql = "DROP TABLE {{tablename}}";
 			sql("prefix")->query($sql);
 		}
+		
+		static function dropTable()
+		{
+			$sql = "DROP TABLE {{tablename}}";
+			sql("prefix")->query($sql);
+		}
 
 		function save(){
+			echo "save";
 			if ($this->id != False)
 				$this->update();
 			else
@@ -160,4 +193,5 @@
 		}
 	}
 	{% endfor %}
+	
 ?>
