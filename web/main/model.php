@@ -20,7 +20,7 @@
 				function oOGE($to){
 					$this->cond[]=
  
- 	$this->sql->escapeInt($to)
+ 	sql()->escapeInt($to)
 
 .">= oO";
 					return $this;
@@ -29,7 +29,7 @@
 				function oOGT($to){
 					$this->cond[]=
  
- 	$this->sql->escapeInt($to)
+ 	sql()->escapeInt($to)
 
 ."> oO";
 					return $this;
@@ -38,7 +38,7 @@
 				function oOEQ($to){
 					$this->cond[]=
  
- 	$this->sql->escapeInt($to)
+ 	sql()->escapeInt($to)
 
 ."= oO";
 					return $this;
@@ -47,7 +47,7 @@
 				function oOLT($to){
 					$this->cond[]=
  
- 	$this->sql->escapeInt($to)
+ 	sql()->escapeInt($to)
 
 ."> oO";
 					return $this;
@@ -56,7 +56,7 @@
 				function oOLE($to){
 					$this->cond[]=
  
- 	$this->sql->escapeInt($to)
+ 	sql()->escapeInt($to)
 
 ."<= oO";
 					return $this;
@@ -77,10 +77,70 @@
 			
 			
 			
+				function idGE($to){
+					$this->cond[]=
+
+	sql()->escapeInt($to)
+
+.">= id";
+					return $this;
+				}
+			
+				function idGT($to){
+					$this->cond[]=
+
+	sql()->escapeInt($to)
+
+."> id";
+					return $this;
+				}
+			
+				function idEQ($to){
+					$this->cond[]=
+
+	sql()->escapeInt($to)
+
+."= id";
+					return $this;
+				}
+			
+				function idLT($to){
+					$this->cond[]=
+
+	sql()->escapeInt($to)
+
+."> id";
+					return $this;
+				}
+			
+				function idLE($to){
+					$this->cond[]=
+
+	sql()->escapeInt($to)
+
+."<= id";
+					return $this;
+				}
+			
+			
+				function orderByIdDesc(){
+					$this->ord[] = "id DESC";
+					return $this;
+				}
+				function orderByIdAsc(){
+					$this->ord[] = "id ASC";
+					return $this;
+				}
+			
+			
+		
+			
+			
+			
 				function asdEQ($to){
 					$this->cond[]=
 
-	$this->sql->escapeString($to)
+	sql()->escapeString($to)
 
 ."= asd";
 					return $this;
@@ -151,11 +211,18 @@
 		
 			var $oO;
 		
+			var $id;
+		
 			var $asd;
 		
 		function __construct(){
 		
 			
+			
+		
+			
+			
+				$this->id = False;
 			
 		
 			
@@ -166,6 +233,7 @@
 		}
 		
 		private function update(){
+			echo "updates";
 			$sql = "UPDATE testtable SET
 			
 			
@@ -175,24 +243,61 @@
 				
 			
 			
+				id =" .$this->id."
+				
+				,
+				
+			
+			
 				asd =" .$this->asd."
 				
 			
 			WHERE id = ".$this->id;
+			echo "update";
+			sql()->query($sql);
 		}
 		
 		private function insert(){
-			return "INSERT INTO testtable(
+			echo "inserts";
+			$sql =  "INSERT INTO testtable(
+				
+					
+						
+						oO
+					
+				
+					
+				
+					
+						,
+						asd
+					
 				
 				) VALUES (".
 				
-					$this->oO.
-					','.
+					
+						
+						
+ 
+ 	sql()->escapeInt($this->oO)
+
+.
+					
 				
-					$this->asd.
+					
+				
+					
+						','.
+						
+
+	sql()->escapeString($this->asd)
+
+.
 					
 						
 				")";
+				echo "insert";
+			sql()->query($sql);
 		}
 		
 		static function createTable()
@@ -202,6 +307,12 @@
 					
 						oO
 						INT
+						
+					,
+					
+						id
+						
+							SERIAL
 						
 					,
 					
@@ -221,6 +332,7 @@
 		}
 		
 		function save(){
+			echo "save";
 			if ($this->id != False)
 				$this->update();
 			else
@@ -232,8 +344,15 @@
 		}
 	}
 		
-	testtable::dropTable();
-	testtable::createTable();
+	
+	#testtable::dropTable();
+	#testtable::createTable();
+	$r = new testtable();
+	$r->oO = 11;
+	$r->asd = "test";
+	$r->save();
+	#testtable::dropTable();
+	#testtable::createTable();
 	
 	#print_r(sql()->query("INSERT INTO test (column, asd) VALUES ('1', '123afwr'))"));
 	#print_r (sql()->query("SELECT * FROM TEST"));

@@ -1,12 +1,12 @@
 {%macro escape(var, type) %}
 {% if type == "id"%}
-	$this->sql->escapeInt({{var}})
+	sql()->escapeInt({{var}})
 {% elif type == "int"%} 
- 	$this->sql->escapeInt({{var}})
+ 	sql()->escapeInt({{var}})
 {% elif type == "string"%}
-	$this->sql->escapeString({{var}})
+	sql()->escapeString({{var}})
 {% elif type == "float"%}
-	$this->sql->escapeFloat({{var}})
+	sql()->escapeFloat({{var}})
 {% endif%}
 {% endmacro%}
 
@@ -107,6 +107,7 @@
 		}
 		
 		private function update(){
+			echo "updates";
 			$sql = "UPDATE {{tablename}} SET
 			{% for columnname in table%}
 			{% set column = table[columnname]%}
@@ -116,19 +117,33 @@
 				{% endif %}
 			{% endfor %}
 			WHERE id = ".$this->id;
+			echo "update";
+			sql({{prefix}})->query($sql);
 		}
 		
 		private function insert(){
-			return "INSERT INTO {{tablename}}(
-				{{columns|join(",")}}
+			echo "inserts";
+			$sql =  "INSERT INTO {{tablename}}(
+				{% for columnname in table %}
+					{% if columnname != "id" %}
+						{% if not loop.first -%}	
+						,
+						{%- endif %}
+						{{ columnname }}
+					{% endif %}
+				{% endfor %}
 				) VALUES (".
 				{% for columnname in table %}
-					$this->{{ columnname }}.
-					{% if not loop.last -%}
-					','.
-					{%- endif %}
+					{% if columnname != "id" %}
+						{% if not loop.first -%}	
+						','.
+						{%- endif %}
+						{{escape("$this->"+columnname, table[columnname]["type"])}}.
+					{% endif %}
 				{% endfor %}		
 				")";
+				echo "insert";
+			sql({{prefix}})->query($sql);
 		}
 		
 		static function createTable()
@@ -140,6 +155,8 @@
 						{{columnname}}
 						{% if type == "int"-%}
 							INT
+						{% elif type == "id" %}
+							SERIAL
 						{% elif type == "string"%}
 							TEXT
 						{% else %}
@@ -160,6 +177,7 @@
 		}
 		
 		function save(){
+			echo "save";
 			if ($this->id != False)
 				$this->update();
 			else
@@ -171,8 +189,15 @@
 		}
 	}
 	{% endfor %}	
-	testtable::dropTable();
-	testtable::createTable();
+	
+	#testtable::dropTable();
+	#testtable::createTable();
+	$r = new testtable();
+	$r->oO = 11;
+	$r->asd = "test";
+	$r->save();
+	#testtable::dropTable();
+	#testtable::createTable();
 	
 	#print_r(sql()->query("INSERT INTO test (column, asd) VALUES ('1', '123afwr'))"));
 	#print_r (sql()->query("SELECT * FROM TEST"));
