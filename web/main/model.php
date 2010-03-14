@@ -17,58 +17,58 @@
 			
 			
 			
-				function columnGE($to){
+				function oOGE($to){
 					$this->cond[]=
  
  	$this->sql->escapeInt($to)
 
-.">= column";
+.">= oO";
 					return $this;
 				}
 			
-				function columnGT($to){
+				function oOGT($to){
 					$this->cond[]=
  
  	$this->sql->escapeInt($to)
 
-."> column";
+."> oO";
 					return $this;
 				}
 			
-				function columnEQ($to){
+				function oOEQ($to){
 					$this->cond[]=
  
  	$this->sql->escapeInt($to)
 
-."= column";
+."= oO";
 					return $this;
 				}
 			
-				function columnLT($to){
+				function oOLT($to){
 					$this->cond[]=
  
  	$this->sql->escapeInt($to)
 
-."> column";
+."> oO";
 					return $this;
 				}
 			
-				function columnLE($to){
+				function oOLE($to){
 					$this->cond[]=
  
  	$this->sql->escapeInt($to)
 
-."<= column";
+."<= oO";
 					return $this;
 				}
 			
 			
-				function orderByColumnDesc(){
-					$this->ord[] = "column DESC";
+				function orderByOoDesc(){
+					$this->ord[] = "oO DESC";
 					return $this;
 				}
-				function orderByColumnAsc(){
-					$this->ord[] = "column ASC";
+				function orderByOoAsc(){
+					$this->ord[] = "oO ASC";
 					return $this;
 				}
 			
@@ -146,7 +146,7 @@
 	
 	class testtable{
 		
-			var $column;
+			var $oO;
 		
 			var $asd;
 		
@@ -179,13 +179,14 @@
 			$sql = "CREATE TABLE testtable (
 				
 					
-						column
+						oO
 						INT
 						
 					,
 					
 						asd
-						INT
+						
+							TEXT
 						
 					
 				)";

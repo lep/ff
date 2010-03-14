@@ -1,5 +1,5 @@
 testtable:
-    testcolumn:
+    oO:
         type: int
     asd:
         type: string

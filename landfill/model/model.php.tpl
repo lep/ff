@@ -124,7 +124,7 @@
 		{
 			$sql = "CREATE TABLE {{tablename}} (
 				{% for columnname in table-%}
-					{% set column = table["column"]%}
+					{% set column = table[columnname]%}
 					{% set type = column["type"]%}
 						{{columnname}}
 						{% if type == "int"-%}
