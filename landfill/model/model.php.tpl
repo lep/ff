@@ -59,7 +59,10 @@
 		}
 		
 		private function buildWhereClause(){
-			return ' WHERE '.implode(' AND ', $this->cond);
+			if (count($this->cond)>0)
+				return ' WHERE '.implode(' AND ', $this->cond);
+			else 
+				return "";
 		}
 		
 		private function buildFromClause(){
@@ -104,20 +107,28 @@
 		}
 		
 		private function update(){
-			
+			$sql = "UPDATE {{tablename}} SET
+			{% for columnname in table%}
+			{% set column = table[columnname]%}
+				{{columnname}} =" .$this->{{ columnname }}."
+				{% if not loop.last %}
+				,
+				{% endif %}
+			{% endfor %}
+			WHERE id = ".$this->id;
 		}
 		
 		private function insert(){
 			return "INSERT INTO {{tablename}}(
 				{{columns|join(",")}}
-				) VALUES ("
-				{% for columnname in columns%}
-					.$this->{{ columnname }}.
-					{% if not loop.last %}
-					.','.
-					{% endif %}
+				) VALUES (".
+				{% for columnname in table %}
+					$this->{{ columnname }}.
+					{% if not loop.last -%}
+					','.
+					{%- endif %}
 				{% endfor %}		
-				.")";
+				")";
 		}
 		
 		static function createTable()

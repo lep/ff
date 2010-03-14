@@ -113,7 +113,10 @@
 		}
 		
 		private function buildWhereClause(){
-			return ' WHERE '.implode(' AND ', $this->cond);
+			if (count($this->cond)>0)
+				return ' WHERE '.implode(' AND ', $this->cond);
+			else 
+				return "";
 		}
 		
 		private function buildFromClause(){
@@ -163,15 +166,33 @@
 		}
 		
 		private function update(){
+			$sql = "UPDATE testtable SET
 			
+			
+				oO =" .$this->oO."
+				
+				,
+				
+			
+			
+				asd =" .$this->asd."
+				
+			
+			WHERE id = ".$this->id;
 		}
 		
 		private function insert(){
 			return "INSERT INTO testtable(
 				
-				) VALUES ("
+				) VALUES (".
+				
+					$this->oO.
+					','.
+				
+					$this->asd.
+					
 						
-				.")";
+				")";
 		}
 		
 		static function createTable()
