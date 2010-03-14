@@ -9,7 +9,6 @@
 	include_once($server_dir."core/template.php");
 	include_once($server_dir."core/common.php");
 	include_once($server_dir."core/controller.php");
-	include_once($server_dir."core/spyc.php");
 	include_once($server_dir."core/dispatch.php");
 	include_once($server_dir."core/sql.php");
 	include_once($server_dir."core/config.php");
