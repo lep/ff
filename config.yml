@@ -1,9 +1,9 @@
 sql:
-  driver: sqlite2
-  dbname: my.db
-  #driver: mysql
-  #dbname: mydatabase
-  #password: mypassword
-  #user: myuser
-  #host: localhost
-  #port: 3306
+  #driver: sqlite2
+  #dbname: my.db
+  driver: mysql
+  dbname: ff
+  password: root
+  user: root
+  host: localhost
+  port: 8889

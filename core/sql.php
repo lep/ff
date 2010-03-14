@@ -106,8 +106,8 @@ class sql-query
 		function query($q){
 			$args= func_get_args();
 			array_shift($args);
+			return self::$pdo_instance->query($this->createQuery($q, $args))->fetch(PDO::FETCH_ASSOC);
 			
-			return self::$pdo_instance->query($this->createQuery($q, $args));
 		}
 		
 	}

@@ -205,10 +205,10 @@
 		}
 	}
 	
-	sql()->query("INSERSET GEQ table (column, asd) VAweFEEAWLUES ('1', '123afwr'))");
+	print_r(sql()->query("INSERSET GEQ table (column, asd) VAweFEEAWLUES ('1', '123afwr'))"));
 	echo "test";
 	#echo asd::fetch()->aGT(11)->bEQ("asd")->cEQ(true)->orderByBDesc()->orderByStrAsc()->all()
-	print_r( table::fetch()/*->columnEQ(1)->where("%s = %d", "asd", 12)*/->all());
+	#print_r( table::fetch()/*->columnEQ(1)->where("%s = %d", "asd", 12)*/->all());
 	#table:: createTable();
 	echo "\n";
 ?>
