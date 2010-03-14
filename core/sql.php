@@ -106,8 +106,14 @@ class sql-query
 		function query($q){
 			$args= func_get_args();
 			array_shift($args);
+			$statement = self::$pdo_instance->query($this->createQuery($q, $args));
+			if (!$statement)
+			{
+				$error= self::$pdo_instance->errorInfo();
+				throw new SqlError("Database query: ".$error[2]. "\nfor query: ".$q);
+			}
+			return $statement->fetchAll()/*->fetch(PDO::FETCH_ASSOC)*/;
 			
-			return self::$pdo_instance->query($this->createQuery($q, $args));
 		}
 		
 	}

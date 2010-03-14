@@ -1,3 +1,15 @@
+{%macro escape(var, type) %}
+{% if type == "id"%}
+	$this->sql->escapeInt({{var}})
+{% elif type == "int"%} 
+ 	$this->sql->escapeInt({{var}})
+{% elif type == "string"%}
+	$this->sql->escapeString({{var}})
+{% elif type == "float"%}
+	$this->sql->escapeFloat({{var}})
+{% endif%}
+{% endmacro%}
+
 <?php
 	error_reporting(E_ALL);
 	{% for tablename in tables %}
@@ -16,17 +28,7 @@
 			{% set type = column["type"]%}
 			{% for op in operations[type] %}
 				function {{columnname}}{{op}}($to){
-					$this->cond[]=$this->sql->
-					{% if type == "id"%}
-						escapeInt($to)
-					{% elif type == "int"%} 
-						escapeInt($to)
-					{% elif type == "string"%}
-						escapeString($to)
-					{% elif type == "float"%}
-						escapeFloat($to)
-					{% endif%}
-						."{{operations[type][op]}} {{columnname}}";
+					$this->cond[]={{escape("$to", type)}}."{{operations[type][op]}} {{columnname}}";
 					return $this;
 				}
 			{% endfor %}
@@ -82,7 +84,8 @@
 			    'LIMIT '.$limit;
 		}
 		function all(){
-			return $this->buildCompleteSelectClause();
+			$sql = $this->buildCompleteSelectClause();
+			return $this->sql->query($sql);
 		}
 		
 	}
@@ -117,7 +120,34 @@
 				.")";
 		}
 		
+		static function createTable()
+		{
+			$sql = "CREATE TABLE {{tablename}} (
+				{% for columnname in table-%}
+					{% set column = table[columnname]%}
+					{% set type = column["type"]%}
+						{{columnname}}
+						{% if type == "int"-%}
+							INT
+						{% elif type == "string"%}
+							TEXT
+						{% else %}
+							{{type}}
+						{%- endif %}
+					{% if not loop.last -%}
+					,
+					{%- endif %}
+				{%- endfor %}
+				)";
+				sql({{prefix}})->query($sql);
+		}
 		
+		static function dropTable()
+		{
+			$sql = "DROP TABLE {{tablename}}";
+			sql("prefix")->query($sql);
+		}
+
 		function save(){
 			if ($this->id != False)
 				$this->update();
@@ -129,8 +159,5 @@
 			return new FETCH_{{tablename}}();
 		}
 	}
-	{% endfor %}	
-	#echo asd::fetch()->aGT(11)->bEQ("asd")->cEQ(true)->orderByBDesc()->orderByStrAsc()->all();
-	echo table::fetch()->columnEQ(1)->where("%s = %d", "asd", 12)->all();
-	echo "\n";
+	{% endfor %}
 ?>
