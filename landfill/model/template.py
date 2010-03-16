@@ -48,7 +48,7 @@ orderable = {
 
 
 
-def render(data):
+def render(data, prefix=""):
 	def phpvar(value):
 		if isinstance(value, basestring):
 			return "\"%s\"" % value
@@ -74,5 +74,5 @@ def render(data):
 		"tables": data, 
 		"operations": operations,
 		"orderable": orderable,
-		"prefix": ""
+		"prefix": prefix+"_"
 	})

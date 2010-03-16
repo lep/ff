@@ -1,4 +1,4 @@
-{%macro escape(var, type) %}
+{% macro escape(var, type) %}
 {% if type == "id"%}
 	sql()->escapeInt({{var}})
 {% elif type == "int"%} 
@@ -14,14 +14,14 @@
 	error_reporting(E_ALL);
 	{% for tablename in tables %}
 	{% set table = tables[tablename] %}
-	class FETCH_{{tablename}}{
+	class {{prefix}}objects_{{tablename}}{
 		var $cond;
 		var $ord;
 		var $sql;
 		function __construct(){
 			$this->cond = array();
 			$this->ord = array();
-			$this->sql = sql({{prefix}});
+			$this->sql = sql("{{prefix}}");
 		}
 		{% for columnname in table%}
 			{% set column = table[columnname]%}
@@ -78,7 +78,7 @@
 		
 		function delete()
 		{
-			$sql = "DELETE FROM {{tablename}} ".
+			$sql = "DELETE FROM {{'{'}}{{tablename}}{{'}'}} ".
 				$this->buildWhereClause();
 			$this->sql->query($sql);
 		}
@@ -87,31 +87,65 @@
 		
 		function offsetAndLimit($offset, $limit){
 			$sql = $this->buildCompleteSelectClause().
-			    'LIMIT '.{{escape("$limit","int")}}.' OFFSET '.{{escape("$offset","int")}};
-			return {{tablename}}::objectsFromRows($this->sql->query($sql));
+			    ' LIMIT '.{{escape("$limit","int")}}.' OFFSET '.{{escape("$offset","int")}};
+			return {{prefix}}{{tablename}}::objectsFromRows($this->sql->query($sql));
 		}
 		
 		function limit($limit){
 			$sql = $this->buildCompleteSelectClause().
-			    'LIMIT '.{{escape("$limit","int")}};
-			return {{tablename}}::objectsFromRows($this->sql->query($sql));
+			    ' LIMIT '.{{escape("$limit","int")}};
+			return {{prefix}}{{tablename}}::objectsFromRows($this->sql->query($sql));
 		}
 		function all(){
 			$sql = $this->buildCompleteSelectClause();
-			return {{tablename}}::objectsFromRows($this->sql->query($sql));
+			return {{prefix}}{{tablename}}::objectsFromRows($this->sql->query($sql));
 		}
 		
 		function get(){
 			$sql = $this->buildCompleteSelectClause();
-			$result = {{tablename}}::objectsFromRows($this->sql->query($sql));
+			$result = {{prefix}}{{tablename}}::objectsFromRows($this->sql->query($sql));
 			if (count($result) == 0)
 				throw new SqlError("{{tablename}} .get() found no row");
 			return $result[0];
 		}
 		
+		function create(){
+			return new {{prefix}}{{tablename}}();
+		}
+		
+		function createTable()
+		{
+			$sql = "CREATE TABLE {{'{'}}{{tablename}}{{'}'}} (
+				{% for columnname in table-%}
+					{% set column = table[columnname]%}
+					{% set type = column["type"]%}
+						{{columnname}}
+						{% if type == "int"-%}
+							INT
+						{% elif type == "id" %}
+							SERIAL
+						{% elif type == "string"%}
+							TEXT
+						{% else %}
+							{{type}}
+						{%- endif %}
+					{% if not loop.last -%}
+					,
+				 	{%- endif %}
+				{%- endfor %}
+				)";
+				$this->sql->query($sql);
+		}
+		
+		static function dropTable()
+		{
+			$sql = "DROP TABLE {{'{'}}{{tablename}}{{'}'}}"  ;
+			$this->sql->query($sql);
+		}
+		
 	}
 	
-	class {{tablename}}{
+	class {{prefix}}{{tablename}}{
 		{% for columnname in table %}
 			{% set column = table[columnname]%}
 			{% if  column["type"] == "id"%}
@@ -152,13 +186,13 @@
 		}
 		
 		private function update(){
-			$sql = "UPDATE {{tablename}} SET
+			$sql = "UPDATE {{'{'}}{{tablename}}{{'}'}} SET
 			{% for columnname in table%}
 			{% set column = table[columnname]%}
 				{% if not loop.first %}
 					,
 				{% endif %}
-				{{columnname}} =" .{{escape("$this->"+columnname, table[columnname]["type"])}}."
+				{{columnname}} =" .{{escape("$this->"+columnname, column["type"])}}."
 
 			{% endfor %}
 			WHERE id = ".$this->id;
@@ -170,7 +204,7 @@
 			if ($this->id == False)
 				throw new SqlError("{{columname}} tried to delete object no stored in db");
 			
-			self::fetch()->idEQ($this->id)->delete();
+			self::objects()->idEQ($this->id)->delete();
 			
 		}
 		
@@ -192,12 +226,16 @@
 			return $arr;
 			// TODO: find nice way to do this
 		}
+		
 		private function insert(){
-			$sql =  "INSERT INTO {{tablename}}(
+			$sql =  "INSERT INTO {{'{'}}{{tablename}}{{'}'}}(
+				{% set first = 1 %}
 				{% for columnname in table %}
 					{% if columnname != "id" %}
-						{% if not loop.first -%}	
+						{% if first == 0 -%}	
 						,
+						{% else %}
+							{% set first = 0 %}
 						{%- endif %}
 						{{ columnname }}
 					{% endif %}
@@ -212,38 +250,9 @@
 					{% endif %}
 				{% endfor %}		
 				")";
-			sql({{prefix}})->query($sql);
+			sql("{{prefix}}")->query($sql);
 		}
 		
-		static function createTable()
-		{
-			$sql = "CREATE TABLE {{tablename}} (
-				{% for columnname in table-%}
-					{% set column = table[columnname]%}
-					{% set type = column["type"]%}
-						{{columnname}}
-						{% if type == "int"-%}
-							INT
-						{% elif type == "id" %}
-							SERIAL
-						{% elif type == "string"%}
-							TEXT
-						{% else %}
-							{{type}}
-						{%- endif %}
-					{% if not loop.last -%}
-					,
-					{%- endif %}
-				{%- endfor %}
-				)";
-				sql({{prefix}})->query($sql);
-		}
-		
-		static function dropTable()
-		{
-			$sql = "DROP TABLE {{tablename}}";
-			sql("prefix")->query($sql);
-		}
 		
 		function save(){
 			if ($this->id != False)
@@ -252,13 +261,14 @@
 				$this->insert();
 		}
 		
-		static function fetch(){
-			return new FETCH_{{tablename}}();
+		static function objects(){
+			return new {{prefix}}objects_{{tablename}}();
 		}
+		
 	}
 	{% endfor %}	
 	
-	testtable::dropTable();
+	/*testtable::dropTable();
 	testtable::createTable();
 	for ($i = 0; $i != 10; $i++)
 	{
@@ -268,19 +278,19 @@
 		$r->save();
 	}
 	
-	$obj = testtable::fetch()->idEQ(3)->get();
+	$obj = testtable::objects()->idEQ(3)->get();
 	print $obj->id;
 	$obj->asd = "wichtig";
 	$obj->save();
 	$obj->delete();
 	
-	testtable::fetch()->delete();
+	testtable::objects()->delete();*/
 	
 	#print_r(sql()->query("INSERT INTO test (column, asd) VALUES ('1', '123afwr'))"));
 	#print_r (sql()->query("SELECT * FROM TEST"));
 	#echo "test";
-	#echo asd::fetch()->aGT(11)->bEQ("asd")->cEQ(true)->orderByBDesc()->orderByStrAsc()->all()
-	#print_r( table::fetch()/*->columnEQ(1)->where("%s = %d", "asd", 12)*/->all());
+	#echo asd::objects()->aGT(11)->bEQ("asd")->cEQ(true)->orderByBDesc()->orderByStrAsc()->all()
+	#print_r( table::objects()/*->columnEQ(1)->where("%s = %d", "asd", 12)*/->all());
 	#table:: createTable();
 	#echo "\n";
 ?>

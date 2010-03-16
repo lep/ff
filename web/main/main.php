@@ -4,6 +4,7 @@
 	class main extends controller{
 		function index(){
 			$this->template->output('index.tpl');
+			$this->model->testtable->create();
 		}
 	}
 ?>

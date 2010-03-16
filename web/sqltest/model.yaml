@@ -1,0 +1,7 @@
+news:
+    content:
+        type: string
+    headline:
+        type: string
+    time:
+        type: int
