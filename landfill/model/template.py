@@ -15,6 +15,15 @@ operations_all = {
 	"LE": "<=",
 }
 
+operations_string= {
+	"EQ": "=",
+	"GT": ">",
+	"GE": ">=",
+	"LT": ">",
+	"LE": "<=",
+	"LIKE": " LIKE "
+}
+
 operations_equal = {
 	"EQ": "=",
 }

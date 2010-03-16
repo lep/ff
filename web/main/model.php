@@ -17,58 +17,58 @@
 			
 			
 			
-				function oOGE($to){
+				function ooGE($to){
 					$this->cond[]=
  
  	sql()->escapeInt($to)
 
-.">= oO";
+.">= oo";
 					return $this;
 				}
 			
-				function oOGT($to){
+				function ooGT($to){
 					$this->cond[]=
  
  	sql()->escapeInt($to)
 
-."> oO";
+."> oo";
 					return $this;
 				}
 			
-				function oOEQ($to){
+				function ooEQ($to){
 					$this->cond[]=
  
  	sql()->escapeInt($to)
 
-."= oO";
+."= oo";
 					return $this;
 				}
 			
-				function oOLT($to){
+				function ooLT($to){
 					$this->cond[]=
  
  	sql()->escapeInt($to)
 
-."> oO";
+."> oo";
 					return $this;
 				}
 			
-				function oOLE($to){
+				function ooLE($to){
 					$this->cond[]=
  
  	sql()->escapeInt($to)
 
-."<= oO";
+."<= oo";
 					return $this;
 				}
 			
 			
 				function orderByOoDesc(){
-					$this->ord[] = "oO DESC";
+					$this->ord[] = "oo DESC";
 					return $this;
 				}
 				function orderByOoAsc(){
-					$this->ord[] = "oO ASC";
+					$this->ord[] = "oo ASC";
 					return $this;
 				}
 			
@@ -190,31 +190,98 @@
 			    $this->buildOrderClause();
 		}
 		
+		function delete()
+		{
+			$sql = "DELETE FROM testtable ".
+				$this->buildWhereClause();
+			$this->sql->query($sql);
+		}
+		
+
 		
 		function offsetAndLimit($offset, $limit){
-			return $this->buildCompleteSelectClause().
-			    'LIMIT '.$limit.' OFFSET '.$offset;
+			$sql = $this->buildCompleteSelectClause().
+			    'LIMIT '.
+ 
+ 	sql()->escapeInt($limit)
+
+.' OFFSET '.
+ 
+ 	sql()->escapeInt($offset)
+
+;
+			return testtable::objectsFromRows($this->sql->query($sql));
 		}
 		
 		function limit($limit){
-			return $this->buildCompleteSelectClause().
-			    'LIMIT '.$limit;
+			$sql = $this->buildCompleteSelectClause().
+			    'LIMIT '.
+ 
+ 	sql()->escapeInt($limit)
+
+;
+			return testtable::objectsFromRows($this->sql->query($sql));
 		}
 		function all(){
 			$sql = $this->buildCompleteSelectClause();
-			return $this->sql->query($sql);
+			return testtable::objectsFromRows($this->sql->query($sql));
+		}
+		
+		function get(){
+			$sql = $this->buildCompleteSelectClause();
+			$result = testtable::objectsFromRows($this->sql->query($sql));
+			if (count($result) == 0)
+				throw new SqlError("testtable .get() found no row");
+			return $result[0];
 		}
 		
 	}
 	
 	class testtable{
 		
-			var $oO;
+			
+			
+			var $oo;
+			
 		
-			var $id;
+			
+			
+			private $id;
+			
 		
+			
+			
 			var $asd;
+			
 		
+	
+		function __get($name)
+		{
+			switch($name){
+			
+				
+				
+			
+				
+				
+					case 'id':
+						return $this->id;
+				
+			
+				
+				
+			
+			}
+			
+			$trace = debug_backtrace();
+		        trigger_error(
+		            'Undefined property via __get(): ' . $name .
+		            ' in ' . $trace[0]['file'] .
+		            ' on line ' . $trace[0]['line'],
+		            E_USER_NOTICE);
+		        return null;
+		}
+	
 		function __construct(){
 		
 			
@@ -233,37 +300,80 @@
 		}
 		
 		private function update(){
-			echo "updates";
 			$sql = "UPDATE testtable SET
 			
 			
-				oO =" .$this->oO."
 				
-				,
-				
+				oo =" .
+ 
+ 	sql()->escapeInt($this->oo)
+
+."
+
 			
 			
-				id =" .$this->id."
 				
-				,
+					,
 				
+				id =" .
+
+	sql()->escapeInt($this->id)
+
+."
+
 			
 			
-				asd =" .$this->asd."
 				
+					,
+				
+				asd =" .
+
+	sql()->escapeString($this->asd)
+
+."
+
 			
 			WHERE id = ".$this->id;
-			echo "update";
 			sql()->query($sql);
 		}
 		
+		function delete()
+		{
+			if ($this->id == False)
+				throw new SqlError(" tried to delete object no stored in db");
+			
+			self::fetch()->idEQ($this->id)->delete();
+			
+		}
+		
+		static function objectFromRow($row)
+		{
+			$object = new self();
+			#this does no checking at all. Don't be evil!
+			
+				$object->oo = $row['oo'];
+			
+				$object->id = $row['id'];
+			
+				$object->asd = $row['asd'];
+			
+			return $object;
+		}
+		
+		static function objectsFromRows($rows)
+		{
+			$arr = array();
+			foreach($rows as $key => $value)
+				$arr[$key] = self::objectFromRow($value);
+			return $arr;
+			// TODO: find nice way to do this
+		}
 		private function insert(){
-			echo "inserts";
 			$sql =  "INSERT INTO testtable(
 				
 					
 						
-						oO
+						oo
 					
 				
 					
@@ -279,7 +389,7 @@
 						
 						
  
- 	sql()->escapeInt($this->oO)
+ 	sql()->escapeInt($this->oo)
 
 .
 					
@@ -296,7 +406,6 @@
 					
 						
 				")";
-				echo "insert";
 			sql()->query($sql);
 		}
 		
@@ -305,7 +414,7 @@
 			$sql = "CREATE TABLE testtable (
 				
 					
-						oO
+						oo
 						INT
 						
 					,
@@ -332,7 +441,6 @@
 		}
 		
 		function save(){
-			echo "save";
 			if ($this->id != False)
 				$this->update();
 			else
@@ -345,14 +453,23 @@
 	}
 		
 	
-	#testtable::dropTable();
-	#testtable::createTable();
-	$r = new testtable();
-	$r->oO = 11;
-	$r->asd = "test";
-	$r->save();
-	#testtable::dropTable();
-	#testtable::createTable();
+	testtable::dropTable();
+	testtable::createTable();
+	for ($i = 0; $i != 10; $i++)
+	{
+		$r = new testtable();
+		$r->oo = $i;
+		$r->asd = "test";
+		$r->save();
+	}
+	
+	$obj = testtable::fetch()->idEQ(3)->get();
+	print $obj->id;
+	$obj->asd = "wichtig";
+	$obj->save();
+	$obj->delete();
+	
+	testtable::fetch()->delete();
 	
 	#print_r(sql()->query("INSERT INTO test (column, asd) VALUES ('1', '123afwr'))"));
 	#print_r (sql()->query("SELECT * FROM TEST"));

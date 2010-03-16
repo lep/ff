@@ -76,27 +76,72 @@
 			    $this->buildOrderClause();
 		}
 		
+		function delete()
+		{
+			$sql = "DELETE FROM {{tablename}} ".
+				$this->buildWhereClause();
+			$this->sql->query($sql);
+		}
+		
+
 		
 		function offsetAndLimit($offset, $limit){
-			return $this->buildCompleteSelectClause().
-			    'LIMIT '.$limit.' OFFSET '.$offset;
+			$sql = $this->buildCompleteSelectClause().
+			    'LIMIT '.{{escape("$limit","int")}}.' OFFSET '.{{escape("$offset","int")}};
+			return {{tablename}}::objectsFromRows($this->sql->query($sql));
 		}
 		
 		function limit($limit){
-			return $this->buildCompleteSelectClause().
-			    'LIMIT '.$limit;
+			$sql = $this->buildCompleteSelectClause().
+			    'LIMIT '.{{escape("$limit","int")}};
+			return {{tablename}}::objectsFromRows($this->sql->query($sql));
 		}
 		function all(){
 			$sql = $this->buildCompleteSelectClause();
-			return $this->sql->query($sql);
+			return {{tablename}}::objectsFromRows($this->sql->query($sql));
+		}
+		
+		function get(){
+			$sql = $this->buildCompleteSelectClause();
+			$result = {{tablename}}::objectsFromRows($this->sql->query($sql));
+			if (count($result) == 0)
+				throw new SqlError("{{tablename}} .get() found no row");
+			return $result[0];
 		}
 		
 	}
 	
 	class {{tablename}}{
 		{% for columnname in table %}
+			{% set column = table[columnname]%}
+			{% if  column["type"] == "id"%}
+			private ${{columnname}};
+			{% else%}
 			var ${{columnname}};
+			{%endif%}
 		{% endfor %}
+	
+		function __get($name)
+		{
+			switch($name){
+			{% for columnname in table %}
+				{% set column = table[columnname]%}
+				{% if  column["type"] == "id"%}
+					case '{{columnname}}':
+						return $this->{{columnname}};
+				{%endif%}
+			{% endfor %}
+			}
+			
+			$trace = debug_backtrace();
+		        trigger_error(
+		            'Undefined property via __get(): ' . $name .
+		            ' in ' . $trace[0]['file'] .
+		            ' on line ' . $trace[0]['line'],
+		            E_USER_NOTICE);
+		        return null;
+		}
+	
 		function __construct(){
 		{% for columnname in table %}
 			{% set column = table[columnname]%}
@@ -107,22 +152,47 @@
 		}
 		
 		private function update(){
-			echo "updates";
 			$sql = "UPDATE {{tablename}} SET
 			{% for columnname in table%}
 			{% set column = table[columnname]%}
-				{{columnname}} =" .$this->{{ columnname }}."
-				{% if not loop.last %}
-				,
+				{% if not loop.first %}
+					,
 				{% endif %}
+				{{columnname}} =" .{{escape("$this->"+columnname, table[columnname]["type"])}}."
+
 			{% endfor %}
 			WHERE id = ".$this->id;
-			echo "update";
 			sql({{prefix}})->query($sql);
 		}
 		
+		function delete()
+		{
+			if ($this->id == False)
+				throw new SqlError("{{columname}} tried to delete object no stored in db");
+			
+			self::fetch()->idEQ($this->id)->delete();
+			
+		}
+		
+		static function objectFromRow($row)
+		{
+			$object = new self();
+			#this does no checking at all. Don't be evil!
+			{% for columnname in table %}
+				$object->{{columnname}} = $row['{{columnname}}'];
+			{% endfor %}
+			return $object;
+		}
+		
+		static function objectsFromRows($rows)
+		{
+			$arr = array();
+			foreach($rows as $key => $value)
+				$arr[$key] = self::objectFromRow($value);
+			return $arr;
+			// TODO: find nice way to do this
+		}
 		private function insert(){
-			echo "inserts";
 			$sql =  "INSERT INTO {{tablename}}(
 				{% for columnname in table %}
 					{% if columnname != "id" %}
@@ -142,7 +212,6 @@
 					{% endif %}
 				{% endfor %}		
 				")";
-				echo "insert";
 			sql({{prefix}})->query($sql);
 		}
 		
@@ -177,7 +246,6 @@
 		}
 		
 		function save(){
-			echo "save";
 			if ($this->id != False)
 				$this->update();
 			else
@@ -190,14 +258,23 @@
 	}
 	{% endfor %}	
 	
-	#testtable::dropTable();
-	#testtable::createTable();
-	$r = new testtable();
-	$r->oO = 11;
-	$r->asd = "test";
-	$r->save();
-	#testtable::dropTable();
-	#testtable::createTable();
+	testtable::dropTable();
+	testtable::createTable();
+	for ($i = 0; $i != 10; $i++)
+	{
+		$r = new testtable();
+		$r->oo = $i;
+		$r->asd = "test";
+		$r->save();
+	}
+	
+	$obj = testtable::fetch()->idEQ(3)->get();
+	print $obj->id;
+	$obj->asd = "wichtig";
+	$obj->save();
+	$obj->delete();
+	
+	testtable::fetch()->delete();
 	
 	#print_r(sql()->query("INSERT INTO test (column, asd) VALUES ('1', '123afwr'))"));
 	#print_r (sql()->query("SELECT * FROM TEST"));
