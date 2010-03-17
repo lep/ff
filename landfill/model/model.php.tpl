@@ -1,3 +1,5 @@
+<?php
+
 {% macro escape(var, type) %}
 {% if type == "id"%}
 	sql()->escapeInt({{var}})
@@ -10,7 +12,6 @@
 {% endif%}
 {% endmacro%}
 
-<?php
 	error_reporting(E_ALL);
 	{% for tablename in tables %}
 	{% set table = tables[tablename] %}
@@ -137,7 +138,7 @@
 				$this->sql->query($sql);
 		}
 		
-		static function dropTable()
+		function dropTable()
 		{
 			$sql = "DROP TABLE {{'{'}}{{tablename}}{{'}'}}"  ;
 			$this->sql->query($sql);

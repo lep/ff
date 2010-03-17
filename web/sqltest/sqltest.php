@@ -15,7 +15,7 @@
 			$news->content = $_POST['content'];
 			$news->headline = $_POST['headline'];
 			$news->data = time();
-			redirect("../");
+			$news->save();
 		}
 		
 		function remove($which)

@@ -1,6 +1,7 @@
-
-
 <?php
+
+
+
 	error_reporting(E_ALL);
 	
 	
@@ -294,7 +295,7 @@
 				$this->sql->query($sql);
 		}
 		
-		static function dropTable()
+		function dropTable()
 		{
 			$sql = "DROP TABLE {news}"  ;
 			$this->sql->query($sql);
