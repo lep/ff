@@ -1,7 +1,6 @@
 news:
-    content:
-        type: string
-    headline:
-        type: string
-    time:
+    content: string
+    headline: string
+    time: 
         type: int
+    
