@@ -14,6 +14,6 @@ def handleFile(source, destination, prefix):
 
 def main():
 	for dir in listdir("web"):
-		path = "web/"+dir+"/model.yaml"
+		path = "web/"+dir+"/model.yml"
 		if exists(path):
 			handleFile(path, "web/"+dir+"/model.php", prefix=dir)

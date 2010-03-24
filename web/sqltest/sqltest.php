@@ -21,8 +21,8 @@
 		
 		function remove($which)
 		{
-			$this->model->idEQ($witch)->delete();
-			redirect('../');
+			$this->model->news->idEQ($which)->delete();
+			redirect('../..');
 		}
 		
 		function install()

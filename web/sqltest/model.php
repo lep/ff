@@ -9,6 +9,9 @@
 		var $cond;
 		var $ord;
 		var $sql;
+		
+		
+		
 		function __construct(){
 			$this->cond = array();
 			$this->ord = array();
@@ -325,6 +328,28 @@
 			var $time;
 			
 		
+		
+		
+		
+		var $__get_schema = array(
+		
+			
+			
+		
+			
+			
+		
+			
+			
+				
+					
+				'id'
+			
+		
+			
+			
+		
+		);
 	
 		function __get($name)
 		{

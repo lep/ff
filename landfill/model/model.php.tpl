@@ -19,6 +19,9 @@
 		var $cond;
 		var $ord;
 		var $sql;
+		
+		
+		
 		function __construct(){
 			$this->cond = array();
 			$this->ord = array();
@@ -155,6 +158,22 @@
 			var ${{columnname}};
 			{%endif%}
 		{% endfor %}
+		
+		
+		{% set first = 1 %}
+		var $__get_schema = array(
+		{% for columnname in table %}
+			{% set column = table[columnname]%}
+			{% if  column["type"] == "id"%}
+				{% if first == 0 -%}	
+				,
+				{% else %}
+					{% set first = 0 %}
+				{%- endif %}
+				'{{columnname}}'
+			{%endif%}
+		{% endfor %}
+		);
 	
 		function __get($name)
 		{

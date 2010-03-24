@@ -30,7 +30,6 @@ abstract class Twig_Resource
   protected function getAttribute($object, $item, array $arguments = array(), $arrayOnly = false)
   {
     $item = (string) $item;
-
     if ((is_array($object) || is_object($object) && $object instanceof ArrayAccess) && isset($object[$item]))
     {
       return $object[$item];
@@ -47,9 +46,19 @@ abstract class Twig_Resource
       {
         $this->env->getExtension('sandbox')->checkPropertyAllowed($object, $item);
       }
-
-      return $object->$item;
+	return $object->$item;
+      
     }
+
+	if (is_object($object) && isset($object->__get_schema) && in_array($item, $object->__get_schema))
+	{
+		if ($this->env->hasExtension('sandbox'))
+	      {
+	        $this->env->getExtension('sandbox')->checkPropertyAllowed($object, $item);
+	      }
+		return $object->$item;
+		
+	}
 
     if (
       !is_object($object) ||
