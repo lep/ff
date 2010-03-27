@@ -27,7 +27,12 @@
 			if (($opts & controller::NOTEMPLATE) == 0){
 				$this->template = new Template($controllername);
 				$this->template->assign("dir", 
-							array('server'=>$server_dir, 'web'=>$web_dir));
+							array('server'=>$server_dir, 
+							      'web'=>$web_dir,
+							      'controller'=>$server_dir.
+							         "/web/".$controllername.
+							         "/template/"
+							));
 			}
 			if (($opts & controller::NOSQL) == 0){
 				$this->sql = sql($controllername);
