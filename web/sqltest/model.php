@@ -541,7 +541,6 @@
 			sql("sqltest_")->query($sql);
 		}
 		
-		
 		function save(){
 			if ($this->id != False)
 				$this->update();

@@ -1,6 +1,0 @@
-news:
-    content: string
-    headline: string
-    time: 
-        type: int
-    

@@ -11,7 +11,6 @@
 		
 		function add()
 		{
-			$this->sql->query("SET CLIENT_ENCODING TO 'UTF8'");
 			$news = $this->model->news->create();
 			$news->content = $_POST['content'];
 			$news->headline = $_POST['headline'];
@@ -33,3 +32,4 @@
 	}
 
 ?>
+
