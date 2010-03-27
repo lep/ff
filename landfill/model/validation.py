@@ -81,17 +81,8 @@ class YAMLValidator(object):
                 self.assertType(name, basestring)
                 self.validateTable(name, data[name])
         
-        
-y = YAMLValidator()
-d = yaml.load(
-"""
-table:
-    column:
-        type: int
-    asd:
-        type: string
-        default: 1
-"""
-)
-y.validateData(d)
-print "worked"
+
+def validate(data):
+	y = YAMLValidator();
+	y.validateData(data)
+	return data

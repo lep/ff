@@ -3,6 +3,7 @@
 			
 		{% for item in news%}
 			<h2>{{item.headline}}</h2>
+			<a href="remove/{{item.id}}">L&ouml;schen</a>
 			<p>{{item.content}}</p>
 		{% endfor %}
 		
