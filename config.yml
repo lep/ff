@@ -1,12 +1,4 @@
 sql:
-  #driver: sqlite2
-  #dbname: my.db
-  #driver: mysql
-  #dbname: ff
-  #password: root
-  #user: root
-  #host: localhost
-  #port: 8889
   driver: pgsql
   dbname: ff
   password: root
