@@ -5,71 +5,59 @@
 	error_reporting(E_ALL);
 	
 	
-	class main_objects_testtable{
+	class sqltest_objects_news{
 		var $cond;
 		var $ord;
 		var $sql;
 		function __construct(){
 			$this->cond = array();
 			$this->ord = array();
-			$this->sql = sql("main_");
+			$this->sql = sql("sqltest_");
 		}
 		
 			
 			
 			
-				function ooGE($to){
+				function contentEQ($to){
 					$this->cond[]=
- 
- 	sql()->escapeInt($to)
 
-.">= oo";
+	sql()->escapeString($to)
+
+."= content";
 					return $this;
 				}
 			
-				function ooGT($to){
+			
+				function orderByContentDesc(){
+					$this->ord[] = "content DESC";
+					return $this;
+				}
+				function orderByContentAsc(){
+					$this->ord[] = "content ASC";
+					return $this;
+				}
+			
+			
+		
+			
+			
+			
+				function headlineEQ($to){
 					$this->cond[]=
- 
- 	sql()->escapeInt($to)
 
-."> oo";
-					return $this;
-				}
-			
-				function ooEQ($to){
-					$this->cond[]=
- 
- 	sql()->escapeInt($to)
+	sql()->escapeString($to)
 
-."= oo";
-					return $this;
-				}
-			
-				function ooLT($to){
-					$this->cond[]=
- 
- 	sql()->escapeInt($to)
-
-."> oo";
-					return $this;
-				}
-			
-				function ooLE($to){
-					$this->cond[]=
- 
- 	sql()->escapeInt($to)
-
-."<= oo";
+."= headline";
 					return $this;
 				}
 			
 			
-				function orderByOoDesc(){
-					$this->ord[] = "oo DESC";
+				function orderByHeadlineDesc(){
+					$this->ord[] = "headline DESC";
 					return $this;
 				}
-				function orderByOoAsc(){
-					$this->ord[] = "oo ASC";
+				function orderByHeadlineAsc(){
+					$this->ord[] = "headline ASC";
 					return $this;
 				}
 			
@@ -138,22 +126,58 @@
 			
 			
 			
-				function asdEQ($to){
+				function timeGE($to){
 					$this->cond[]=
+ 
+ 	sql()->escapeInt($to)
 
-	sql()->escapeString($to)
+.">= time";
+					return $this;
+				}
+			
+				function timeGT($to){
+					$this->cond[]=
+ 
+ 	sql()->escapeInt($to)
 
-."= asd";
+."> time";
+					return $this;
+				}
+			
+				function timeEQ($to){
+					$this->cond[]=
+ 
+ 	sql()->escapeInt($to)
+
+."= time";
+					return $this;
+				}
+			
+				function timeLT($to){
+					$this->cond[]=
+ 
+ 	sql()->escapeInt($to)
+
+."> time";
+					return $this;
+				}
+			
+				function timeLE($to){
+					$this->cond[]=
+ 
+ 	sql()->escapeInt($to)
+
+."<= time";
 					return $this;
 				}
 			
 			
-				function orderByAsdDesc(){
-					$this->ord[] = "asd DESC";
+				function orderByTimeDesc(){
+					$this->ord[] = "time DESC";
 					return $this;
 				}
-				function orderByAsdAsc(){
-					$this->ord[] = "asd ASC";
+				function orderByTimeAsc(){
+					$this->ord[] = "time ASC";
 					return $this;
 				}
 			
@@ -181,7 +205,7 @@
 		}
 		
 		private function buildFromClause(){
-			return ' FROM {testtable}';
+			return ' FROM {news}';
 		}
 		
 		private function  buildCompleteSelectClause(){
@@ -193,7 +217,7 @@
 		
 		function delete()
 		{
-			$sql = "DELETE FROM {testtable} ".
+			$sql = "DELETE FROM {news} ".
 				$this->buildWhereClause();
 			$this->sql->query($sql);
 		}
@@ -211,7 +235,7 @@
  	sql()->escapeInt($offset)
 
 ;
-			return main_testtable::objectsFromRows($this->sql->query($sql));
+			return sqltest_news::objectsFromRows($this->sql->query($sql));
 		}
 		
 		function limit($limit){
@@ -221,32 +245,39 @@
  	sql()->escapeInt($limit)
 
 ;
-			return main_testtable::objectsFromRows($this->sql->query($sql));
+			return sqltest_news::objectsFromRows($this->sql->query($sql));
 		}
 		function all(){
 			$sql = $this->buildCompleteSelectClause();
-			return main_testtable::objectsFromRows($this->sql->query($sql));
+			return sqltest_news::objectsFromRows($this->sql->query($sql));
 		}
 		
 		function get(){
 			$sql = $this->buildCompleteSelectClause();
-			$result = main_testtable::objectsFromRows($this->sql->query($sql));
+			$result = sqltest_news::objectsFromRows($this->sql->query($sql));
 			if (count($result) == 0)
-				throw new SqlError("testtable .get() found no row");
+				throw new SqlError("news .get() found no row");
 			return $result[0];
 		}
 		
 		function create(){
-			return new main_testtable();
+			return new sqltest_news();
 		}
 		
 		function createTable()
 		{
-			$sql = "CREATE TABLE {testtable} (
+			$sql = "CREATE TABLE {news} (
 				
 					
-						oo
-						INT
+						content
+						
+							TEXT
+						
+					,
+					
+						headline
+						
+							TEXT
 						
 					,
 					
@@ -256,9 +287,8 @@
 						
 					,
 					
-						asd
-						
-							TEXT
+						time
+						INT
 						
 					
 				)";
@@ -267,17 +297,22 @@
 		
 		function dropTable()
 		{
-			$sql = "DROP TABLE {testtable}"  ;
+			$sql = "DROP TABLE {news}"  ;
 			$this->sql->query($sql);
 		}
 		
 	}
 	
-	class main_testtable{
+	class sqltest_news{
 		
 			
 			
-			var $oo;
+			var $content;
+			
+		
+			
+			
+			var $headline;
 			
 		
 			
@@ -287,13 +322,16 @@
 		
 			
 			
-			var $asd;
+			var $time;
 			
 		
 	
 		function __get($name)
 		{
 			switch($name){
+			
+				
+				
 			
 				
 				
@@ -325,24 +363,36 @@
 		
 			
 			
+		
+			
+			
 				$this->id = False;
 			
 		
 			
 			
-				$this->asd = 1;
-			
 		
 		}
 		
 		private function update(){
-			$sql = "UPDATE {testtable} SET
+			$sql = "UPDATE {news} SET
 			
 			
 				
-				oo =" .
- 
- 	sql()->escapeInt($this->oo)
+				content =" .
+
+	sql()->escapeString($this->content)
+
+."
+
+			
+			
+				
+					,
+				
+				headline =" .
+
+	sql()->escapeString($this->headline)
 
 ."
 
@@ -362,15 +412,15 @@
 				
 					,
 				
-				asd =" .
-
-	sql()->escapeString($this->asd)
+				time =" .
+ 
+ 	sql()->escapeInt($this->time)
 
 ."
 
 			
 			WHERE id = ".$this->id;
-			sql(main_)->query($sql);
+			sql(sqltest_)->query($sql);
 		}
 		
 		function delete()
@@ -387,11 +437,13 @@
 			$object = new self();
 			#this does no checking at all. Don't be evil!
 			
-				$object->oo = $row['oo'];
+				$object->content = $row['content'];
+			
+				$object->headline = $row['headline'];
 			
 				$object->id = $row['id'];
 			
-				$object->asd = $row['asd'];
+				$object->time = $row['time'];
 			
 			return $object;
 		}
@@ -406,13 +458,19 @@
 		}
 		
 		private function insert(){
-			$sql =  "INSERT INTO {testtable}(
+			$sql =  "INSERT INTO {news}(
 				
 				
 					
 						
 							
-						oo
+						content
+					
+				
+					
+						,
+						
+						headline
 					
 				
 					
@@ -420,7 +478,7 @@
 					
 						,
 						
-						asd
+						time
 					
 				
 				) VALUES (".
@@ -428,8 +486,17 @@
 					
 						
 						
- 
- 	sql()->escapeInt($this->oo)
+
+	sql()->escapeString($this->content)
+
+.
+					
+				
+					
+						','.
+						
+
+	sql()->escapeString($this->headline)
 
 .
 					
@@ -439,14 +506,14 @@
 					
 						','.
 						
-
-	sql()->escapeString($this->asd)
+ 
+ 	sql()->escapeInt($this->time)
 
 .
 					
 						
 				")";
-			sql("main_")->query($sql);
+			sql("sqltest_")->query($sql);
 		}
 		
 		
@@ -458,7 +525,7 @@
 		}
 		
 		static function objects(){
-			return new main_objects_testtable();
+			return new sqltest_objects_news();
 		}
 		
 	}

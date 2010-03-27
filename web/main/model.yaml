@@ -1,0 +1,6 @@
+testtable:
+    oo:
+        type: int
+    asd:
+        type: string
+        default: 1

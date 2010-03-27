@@ -1,4 +1,6 @@
-{%macro escape(var, type) %}
+<?php
+
+{% macro escape(var, type) %}
 {% if type == "id"%}
 	sql()->escapeInt({{var}})
 {% elif type == "int"%} 
@@ -10,18 +12,17 @@
 {% endif%}
 {% endmacro%}
 
-<?php
 	error_reporting(E_ALL);
 	{% for tablename in tables %}
 	{% set table = tables[tablename] %}
-	class FETCH_{{tablename}}{
+	class {{prefix}}objects_{{tablename}}{
 		var $cond;
 		var $ord;
 		var $sql;
 		function __construct(){
 			$this->cond = array();
 			$this->ord = array();
-			$this->sql = sql({{prefix}});
+			$this->sql = sql("{{prefix}}");
 		}
 		{% for columnname in table%}
 			{% set column = table[columnname]%}
@@ -76,27 +77,106 @@
 			    $this->buildOrderClause();
 		}
 		
+		function delete()
+		{
+			$sql = "DELETE FROM {{'{'}}{{tablename}}{{'}'}} ".
+				$this->buildWhereClause();
+			$this->sql->query($sql);
+		}
+		
+
 		
 		function offsetAndLimit($offset, $limit){
-			return $this->buildCompleteSelectClause().
-			    'LIMIT '.$limit.' OFFSET '.$offset;
+			$sql = $this->buildCompleteSelectClause().
+			    ' LIMIT '.{{escape("$limit","int")}}.' OFFSET '.{{escape("$offset","int")}};
+			return {{prefix}}{{tablename}}::objectsFromRows($this->sql->query($sql));
 		}
 		
 		function limit($limit){
-			return $this->buildCompleteSelectClause().
-			    'LIMIT '.$limit;
+			$sql = $this->buildCompleteSelectClause().
+			    ' LIMIT '.{{escape("$limit","int")}};
+			return {{prefix}}{{tablename}}::objectsFromRows($this->sql->query($sql));
 		}
 		function all(){
 			$sql = $this->buildCompleteSelectClause();
-			return $this->sql->query($sql);
+			return {{prefix}}{{tablename}}::objectsFromRows($this->sql->query($sql));
+		}
+		
+		function get(){
+			$sql = $this->buildCompleteSelectClause();
+			$result = {{prefix}}{{tablename}}::objectsFromRows($this->sql->query($sql));
+			if (count($result) == 0)
+				throw new SqlError("{{tablename}} .get() found no row");
+			return $result[0];
+		}
+		
+		function create(){
+			return new {{prefix}}{{tablename}}();
+		}
+		
+		function createTable()
+		{
+			$sql = "CREATE TABLE {{'{'}}{{tablename}}{{'}'}} (
+				{% for columnname in table-%}
+					{% set column = table[columnname]%}
+					{% set type = column["type"]%}
+						{{columnname}}
+						{% if type == "int"-%}
+							INT
+						{% elif type == "id" %}
+							SERIAL
+						{% elif type == "string"%}
+							TEXT
+						{% else %}
+							{{type}}
+						{%- endif %}
+					{% if not loop.last -%}
+					,
+				 	{%- endif %}
+				{%- endfor %}
+				)";
+				$this->sql->query($sql);
+		}
+		
+		function dropTable()
+		{
+			$sql = "DROP TABLE {{'{'}}{{tablename}}{{'}'}}"  ;
+			$this->sql->query($sql);
 		}
 		
 	}
 	
-	class {{tablename}}{
+	class {{prefix}}{{tablename}}{
 		{% for columnname in table %}
+			{% set column = table[columnname]%}
+			{% if  column["type"] == "id"%}
+			private ${{columnname}};
+			{% else%}
 			var ${{columnname}};
+			{%endif%}
 		{% endfor %}
+	
+		function __get($name)
+		{
+			switch($name){
+			{% for columnname in table %}
+				{% set column = table[columnname]%}
+				{% if  column["type"] == "id"%}
+					case '{{columnname}}':
+						return $this->{{columnname}};
+				{%endif%}
+			{% endfor %}
+			}
+			
+			$trace = debug_backtrace();
+		        trigger_error(
+		            'Undefined property via __get(): ' . $name .
+		            ' in ' . $trace[0]['file'] .
+		            ' on line ' . $trace[0]['line'],
+		            E_USER_NOTICE);
+		        return null;
+		}
+	
 		function __construct(){
 		{% for columnname in table %}
 			{% set column = table[columnname]%}
@@ -107,27 +187,56 @@
 		}
 		
 		private function update(){
-			echo "updates";
-			$sql = "UPDATE {{tablename}} SET
+			$sql = "UPDATE {{'{'}}{{tablename}}{{'}'}} SET
 			{% for columnname in table%}
 			{% set column = table[columnname]%}
-				{{columnname}} =" .$this->{{ columnname }}."
-				{% if not loop.last %}
-				,
+				{% if not loop.first %}
+					,
 				{% endif %}
+				{{columnname}} =" .{{escape("$this->"+columnname, column["type"])}}."
+
 			{% endfor %}
 			WHERE id = ".$this->id;
-			echo "update";
 			sql({{prefix}})->query($sql);
 		}
 		
+		function delete()
+		{
+			if ($this->id == False)
+				throw new SqlError("{{columname}} tried to delete object no stored in db");
+			
+			self::objects()->idEQ($this->id)->delete();
+			
+		}
+		
+		static function objectFromRow($row)
+		{
+			$object = new self();
+			#this does no checking at all. Don't be evil!
+			{% for columnname in table %}
+				$object->{{columnname}} = $row['{{columnname}}'];
+			{% endfor %}
+			return $object;
+		}
+		
+		static function objectsFromRows($rows)
+		{
+			$arr = array();
+			foreach($rows as $key => $value)
+				$arr[$key] = self::objectFromRow($value);
+			return $arr;
+			// TODO: find nice way to do this
+		}
+		
 		private function insert(){
-			echo "inserts";
-			$sql =  "INSERT INTO {{tablename}}(
+			$sql =  "INSERT INTO {{'{'}}{{tablename}}{{'}'}}(
+				{% set first = 1 %}
 				{% for columnname in table %}
 					{% if columnname != "id" %}
-						{% if not loop.first -%}	
+						{% if first == 0 -%}	
 						,
+						{% else %}
+							{% set first = 0 %}
 						{%- endif %}
 						{{ columnname }}
 					{% endif %}
@@ -142,56 +251,47 @@
 					{% endif %}
 				{% endfor %}		
 				")";
-				echo "insert";
-			sql({{prefix}})->query($sql);
+			sql("{{prefix}}")->query($sql);
 		}
 		
-		static function createTable()
-		{
-			$sql = "CREATE TABLE {{tablename}} (
-				{% for columnname in table-%}
-					{% set column = table[columnname]%}
-					{% set type = column["type"]%}
-						{{columnname}}
-						{% if type == "int"-%}
-							INT
-						{% elif type == "string"%}
-							TEXT
-						{% else %}
-							{{type}}
-						{%- endif %}
-					{% if not loop.last -%}
-					,
-					{%- endif %}
-				{%- endfor %}
-				)";
-				sql({{prefix}})->query($sql);
-		}
 		
-		static function dropTable()
-		{
-			$sql = "DROP TABLE {{tablename}}";
-			sql("prefix")->query($sql);
-		}
-		
-		static function dropTable()
-		{
-			$sql = "DROP TABLE {{tablename}}";
-			sql("prefix")->query($sql);
-		}
-
 		function save(){
-			echo "save";
 			if ($this->id != False)
 				$this->update();
 			else
 				$this->insert();
 		}
 		
-		static function fetch(){
-			return new FETCH_{{tablename}}();
+		static function objects(){
+			return new {{prefix}}objects_{{tablename}}();
 		}
+		
 	}
-	{% endfor %}
+	{% endfor %}	
 	
+	/*testtable::dropTable();
+	testtable::createTable();
+	for ($i = 0; $i != 10; $i++)
+	{
+		$r = new testtable();
+		$r->oo = $i;
+		$r->asd = "test";
+		$r->save();
+	}
+	
+	$obj = testtable::objects()->idEQ(3)->get();
+	print $obj->id;
+	$obj->asd = "wichtig";
+	$obj->save();
+	$obj->delete();
+	
+	testtable::objects()->delete();*/
+	
+	#print_r(sql()->query("INSERT INTO test (column, asd) VALUES ('1', '123afwr'))"));
+	#print_r (sql()->query("SELECT * FROM TEST"));
+	#echo "test";
+	#echo asd::objects()->aGT(11)->bEQ("asd")->cEQ(true)->orderByBDesc()->orderByStrAsc()->all()
+	#print_r( table::objects()/*->columnEQ(1)->where("%s = %d", "asd", 12)*/->all());
+	#table:: createTable();
+	#echo "\n";
 ?>

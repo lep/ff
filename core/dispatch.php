@@ -4,15 +4,36 @@
 	$actionname;
 	class dispatcher{
 		
-		static function loadController($controller){
+		static function loadFile($path){
 			global $server_dir;
 
-			$path = "/web/".$controller."/".$controller.".php";
 			$absolutepath = realpath($server_dir.$path);
 			if (file_exists($absolutepath)){
 				include_once($absolutepath);
 			}else{
-				throw new ErrorNotFound("Controller '".$path."' not found.");			}
+				throw new ErrorNotFound("File '".$path."' not found.");			
+			}
+		}
+		
+		static function loadController($controller){
+			global $server_dir;
+
+			$path = "/web/".$controller."/".$controller.".php";
+			self::loadFile($path);
+		}
+		
+		static function instantiateClass($class){
+			if(!class_exists($class))
+				throw new ErrorNotFound("Controller ".$class.
+					" not found.");
+			return new $class;
+		}
+		
+		static function loadModel($controller, $model){
+			$path = "/web/".$controller."/model.php";
+			self::loadFile($path);
+			$class = $controller."_".$model;
+			return self::instantiateClass($class);
 		}
 
 		static function executeControllerAction($controller, $action, $args){

@@ -15,6 +15,15 @@ operations_all = {
 	"LE": "<=",
 }
 
+operations_string= {
+	"EQ": "=",
+	"GT": ">",
+	"GE": ">=",
+	"LT": ">",
+	"LE": "<=",
+	"LIKE": " LIKE "
+}
+
 operations_equal = {
 	"EQ": "=",
 }
@@ -39,7 +48,7 @@ orderable = {
 
 
 
-def render(data):
+def render(data, prefix=""):
 	def phpvar(value):
 		if isinstance(value, basestring):
 			return "\"%s\"" % value
@@ -65,5 +74,5 @@ def render(data):
 		"tables": data, 
 		"operations": operations,
 		"orderable": orderable,
-		"prefix": ""
+		"prefix": prefix+"_"
 	})
