@@ -142,7 +142,7 @@
 			 filter_var($value, FILTER_FLAG_NONE, self::$nice_names[$filter]);
 		}
 
-		private function get($name){
+		function __get($name){
 			$ret=array();
 			foreach($this->form[$name] as $k=>$v){
 				
