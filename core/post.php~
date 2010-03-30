@@ -118,7 +118,7 @@
             	if(isset($v['default'])){
                 	return $v['default'];
 				}else{
-                	throw some Exception('Required value not set');
+                	throw some exception('');
 				}
 			}else{
             	return $_POST[$k];
@@ -144,44 +144,6 @@
 			return 
 			 filter_var($value, FILTER_FLAG_NONE, self::$nice_names[$filter]);
 		}
-		
-		private function checkBounds($value, $min, $max){
-			$type=gettype($value);
-			if($type=='string')
-				$value=strlen($value);
-			elseif(! ($type=='integer' || $type=='double'))
-				throw new Exception('Unsupported type for bound-checking');
-			
-			if(isset($min) and $value < $min){
-				throw new Exception('Value not in range');
-			}
-			if(isset($max) and $value > $max){
-				throw new Exception('Value not in range');
-			}
-		}
-		
-		private function checkRegex($value, $regex){
-			if(! isset($regex))
-				return;
-				
-			if(gettype($value) != 'string'){
-				throw new Exception('Only strings are allowed '.
-									'to be pattern-matched');
-			}
-			
-			if(is_array($regex)){
-				foreach($regex as $r){
-					$this->regexHelper($value, $r);
-				}
-			}else{
-				$this->regexHelper($value, $regex);
-			}
-		}#where
-		private function regexHelper($value, $r){
-			if(! preg_match($r, $value)){
-				throw new Exception('Value does not match pattern');
-			}
-		}
 
 		function __get($name){
 			$ret=array();
@@ -197,14 +159,7 @@
 				foreach($v['filter'] as $filter){
 					$ret[$k]=$this->applyFilter($ret[$k], $filter);
 				}
-				
-				#min-max
-				$this->checkBounds($ret[$k], @$v['min'], @$v['max']);
-				
-				#regex
-				$this->checkRegex($ret[$k], @$v['pattern']);
 			}
-			return $ret;
 		}
 
 
