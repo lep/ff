@@ -1,0 +1,9 @@
+user:
+    name: string
+    password: string
+    sessionid: 
+        type: string
+        default: 
+    loginexpired:
+        type: int
+        default: 0
