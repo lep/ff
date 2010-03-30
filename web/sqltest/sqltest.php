@@ -4,6 +4,7 @@
 	{
 		function index()
 		{
+			$this->module->moduletest->oO();
 			$news = $this->model->news->orderByTimeAsc()->limit(10);
 			$this->template->assign("news", $news);
 			$this->template->output("main.tpl");

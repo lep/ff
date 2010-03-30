@@ -19,7 +19,7 @@
 			
 			$path=array();
 			foreach(classHierachy($this->controller) as $class){
-				if($class!="controller")
+				if($class!="controller" && $class!="basecontroller")
 					$path[]= $server_dir .'/web/'. $class .'/template/';
 			}
 			#print_r($path);

@@ -13,35 +13,61 @@
 		
 	}
 	
-	
-	abstract class controller{
-		protected $template;
+	class modulehelper{
+		function __get($name){
+			return dispatcher::loadModule($name);
+		}
 		
+	}
+	
+	abstract class basecontroller{
 		const NOSQL = 0x1;
 		const NOTEMPLATE = 0x2;
 		const NOORM = 0x4;
 		
-		function __construct($opts = 0){
+		function __construct($name, $opts = 0){
+			if (($opts & self::NOSQL) == 0){
+				$this->sql = sql($name);
+			}
+			
+			if ((($opts & self::NOSQL) == 0) && (($opts & self::NOORM)) == 0){
+				$this->model = new modelhelper($name);
+			}
+			
+			
+		}
+	}
+	
+	abstract class module extends basecontroller{
+		
+	}
+	
+	
+	abstract class controller extends basecontroller{
+		protected $template;
+		
+		const NOTEMPLATE = 0x2;
+		const NOMODULE = 0x8;
+		
+		function __construct($name, $opts = 0){
+			parent::__construct($name, $opts);
+			
 			global $server_dir, $web_dir;
-			$controllername = get_class($this);
+			
 			if (($opts & controller::NOTEMPLATE) == 0){
-				$this->template = new Template($controllername);
+				$this->template = new Template($name);
 				$this->template->assign("dir", 
 							array('server'=>$server_dir, 
 							      'web'=>$web_dir,
 							      'controller'=>$server_dir.
-							         "/web/".$controllername.
+							         "/web/".$name.
 							         "/template/"
 							));
 			}
-			if (($opts & controller::NOSQL) == 0){
-				$this->sql = sql($controllername);
+			if (($opts & self::NOMODULE) == 0)
+			{
+				$this->module = new modulehelper();
 			}
-			
-			if ((($opts & controller::NOSQL) == 0) && (($opts & controller::NOORM)) == 0){
-				$this->model = new modelhelper($controllername);
-			}
-			
 			
 		}
 	}
