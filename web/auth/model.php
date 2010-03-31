@@ -146,6 +146,51 @@
 			
 			
 				
+					function passwordGT($to){
+						$this->cond[]="password > ".
+
+	sql()->escapeString($to)
+
+;
+						return $this;
+					}
+					
+					function passwordLIKE($to){
+						$this->cond[]="password  LIKE  ".
+
+	sql()->escapeString($to)
+
+;
+						return $this;
+					}
+					
+					function passwordLT($to){
+						$this->cond[]="password > ".
+
+	sql()->escapeString($to)
+
+;
+						return $this;
+					}
+					
+					function passwordGE($to){
+						$this->cond[]="password >= ".
+
+	sql()->escapeString($to)
+
+;
+						return $this;
+					}
+					
+					function passwordLE($to){
+						$this->cond[]="password <= ".
+
+	sql()->escapeString($to)
+
+;
+						return $this;
+					}
+					
 					function passwordEQ($to){
 						$this->cond[]="password = ".
 
@@ -172,6 +217,51 @@
 			
 			
 				
+					function sessionidGT($to){
+						$this->cond[]="sessionid > ".
+
+	sql()->escapeString($to)
+
+;
+						return $this;
+					}
+					
+					function sessionidLIKE($to){
+						$this->cond[]="sessionid  LIKE  ".
+
+	sql()->escapeString($to)
+
+;
+						return $this;
+					}
+					
+					function sessionidLT($to){
+						$this->cond[]="sessionid > ".
+
+	sql()->escapeString($to)
+
+;
+						return $this;
+					}
+					
+					function sessionidGE($to){
+						$this->cond[]="sessionid >= ".
+
+	sql()->escapeString($to)
+
+;
+						return $this;
+					}
+					
+					function sessionidLE($to){
+						$this->cond[]="sessionid <= ".
+
+	sql()->escapeString($to)
+
+;
+						return $this;
+					}
+					
 					function sessionidEQ($to){
 						$this->cond[]="sessionid = ".
 
@@ -198,6 +288,51 @@
 			
 			
 				
+					function nameGT($to){
+						$this->cond[]="name > ".
+
+	sql()->escapeString($to)
+
+;
+						return $this;
+					}
+					
+					function nameLIKE($to){
+						$this->cond[]="name  LIKE  ".
+
+	sql()->escapeString($to)
+
+;
+						return $this;
+					}
+					
+					function nameLT($to){
+						$this->cond[]="name > ".
+
+	sql()->escapeString($to)
+
+;
+						return $this;
+					}
+					
+					function nameGE($to){
+						$this->cond[]="name >= ".
+
+	sql()->escapeString($to)
+
+;
+						return $this;
+					}
+					
+					function nameLE($to){
+						$this->cond[]="name <= ".
+
+	sql()->escapeString($to)
+
+;
+						return $this;
+					}
+					
 					function nameEQ($to){
 						$this->cond[]="name = ".
 

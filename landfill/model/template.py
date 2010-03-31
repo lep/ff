@@ -33,7 +33,7 @@ operations = {
 	"float": operations_all,
 	"datetime": operations_all,
 	"id": operations_all,
-	"string": operations_equal,
+	"string": operations_string,
 	"bool": operations_equal,
 }
 

@@ -22,6 +22,51 @@
 			
 			
 				
+					function contentGT($to){
+						$this->cond[]="content > ".
+
+	sql()->escapeString($to)
+
+;
+						return $this;
+					}
+					
+					function contentLIKE($to){
+						$this->cond[]="content  LIKE  ".
+
+	sql()->escapeString($to)
+
+;
+						return $this;
+					}
+					
+					function contentLT($to){
+						$this->cond[]="content > ".
+
+	sql()->escapeString($to)
+
+;
+						return $this;
+					}
+					
+					function contentGE($to){
+						$this->cond[]="content >= ".
+
+	sql()->escapeString($to)
+
+;
+						return $this;
+					}
+					
+					function contentLE($to){
+						$this->cond[]="content <= ".
+
+	sql()->escapeString($to)
+
+;
+						return $this;
+					}
+					
 					function contentEQ($to){
 						$this->cond[]="content = ".
 
@@ -48,6 +93,51 @@
 			
 			
 				
+					function headlineGT($to){
+						$this->cond[]="headline > ".
+
+	sql()->escapeString($to)
+
+;
+						return $this;
+					}
+					
+					function headlineLIKE($to){
+						$this->cond[]="headline  LIKE  ".
+
+	sql()->escapeString($to)
+
+;
+						return $this;
+					}
+					
+					function headlineLT($to){
+						$this->cond[]="headline > ".
+
+	sql()->escapeString($to)
+
+;
+						return $this;
+					}
+					
+					function headlineGE($to){
+						$this->cond[]="headline >= ".
+
+	sql()->escapeString($to)
+
+;
+						return $this;
+					}
+					
+					function headlineLE($to){
+						$this->cond[]="headline <= ".
+
+	sql()->escapeString($to)
+
+;
+						return $this;
+					}
+					
 					function headlineEQ($to){
 						$this->cond[]="headline = ".
 
@@ -715,6 +805,51 @@
 			
 			
 				
+					function nameGT($to){
+						$this->cond[]="name > ".
+
+	sql()->escapeString($to)
+
+;
+						return $this;
+					}
+					
+					function nameLIKE($to){
+						$this->cond[]="name  LIKE  ".
+
+	sql()->escapeString($to)
+
+;
+						return $this;
+					}
+					
+					function nameLT($to){
+						$this->cond[]="name > ".
+
+	sql()->escapeString($to)
+
+;
+						return $this;
+					}
+					
+					function nameGE($to){
+						$this->cond[]="name >= ".
+
+	sql()->escapeString($to)
+
+;
+						return $this;
+					}
+					
+					function nameLE($to){
+						$this->cond[]="name <= ".
+
+	sql()->escapeString($to)
+
+;
+						return $this;
+					}
+					
 					function nameEQ($to){
 						$this->cond[]="name = ".
 
