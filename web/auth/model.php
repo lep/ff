@@ -562,7 +562,7 @@
 
 			
 			WHERE id = ".$this->id;
-			sql(auth_)->query($sql);
+			sql("auth_")->query($sql);
 		}
 		
 		function delete()

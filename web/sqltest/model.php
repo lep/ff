@@ -566,7 +566,7 @@
 
 			
 			WHERE id = ".$this->id;
-			sql(sqltest_)->query($sql);
+			sql("sqltest_")->query($sql);
 		}
 		
 		function delete()
@@ -1027,7 +1027,7 @@
 
 			
 			WHERE id = ".$this->id;
-			sql(sqltest_)->query($sql);
+			sql("sqltest_")->query($sql);
 		}
 		
 		function delete()

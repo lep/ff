@@ -276,7 +276,7 @@
 
 			{% endfor %}
 			WHERE id = ".$this->id;
-			sql({{prefix}})->query($sql);
+			sql("{{prefix}}")->query($sql);
 		}
 		
 		function delete()
