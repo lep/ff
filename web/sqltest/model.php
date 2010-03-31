@@ -637,8 +637,10 @@
 				
 				) VALUES (".
 				
+				
 					
 						
+							
 						
 
 	sql()->escapeString($this->content)
@@ -647,7 +649,8 @@
 					
 				
 					
-						','.
+						",".
+						
 						
 
 	sql()->escapeString($this->headline)
@@ -656,7 +659,8 @@
 					
 				
 					
-						','.
+						",".
+						
 						
  
  	sql()->escapeInt($this->time)
@@ -667,7 +671,8 @@
 					
 				
 					
-						','.
+						",".
+						
 						
 
 	sql()->escapeInt($this->author)
@@ -1069,8 +1074,10 @@
 				
 				) VALUES (".
 				
+				
 					
 						
+							
 						
 
 	sql()->escapeString($this->name)

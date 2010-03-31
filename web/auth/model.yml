@@ -3,7 +3,7 @@ user:
     password: string
     sessionid: 
         type: string
-        default: 
+        default: empty
     loginexpired:
         type: int
         default: 0

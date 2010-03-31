@@ -45,6 +45,7 @@
 	
 	abstract class controller extends basecontroller{
 		protected $template;
+		private $ownmodule;
 		
 		const NOTEMPLATE = 0x2;
 		const NOMODULE = 0x8;
@@ -66,9 +67,17 @@
 			}
 			if (($opts & self::NOMODULE) == 0)
 			{
+				$path = $server_dir."/web/".$name."/module.php";
+				if (file_exists($path))
+					$this->ownmodule = dispatcher::loadModule($name);
 				$this->module = new modulehelper();
 			}
 			
+		}
+		
+		function __call($name, $args)
+		{
+			call_user_func_array(array($this->ownmodule, $name), $args);
 		}
 	}
 ?>

@@ -2,19 +2,20 @@
 	class authmodule extends module
 	{
 		
-		const LOGIN_TIME= 60*60*24;
+		const LOGIN_TIME= 86400;
 		
 		private function hashFunction($what)
 		{
 			return sha1($what);
 		}
 		
-		function create($name, $password)
+		function createUser($name, $password)
 		{
 			$user = $this->model->user->create();
 			$user->name = $name;
 			$pass = $password.$name;
-			$user->password = this->hashFunction($pass);
+			$user->password = $this->hashFunction($pass);
+			$user->save();
 			return $user;
 		}
 		

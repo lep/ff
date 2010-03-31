@@ -321,10 +321,13 @@
 					{% endif %}
 				{% endfor %}
 				) VALUES (".
+				{% set first = 1 %}
 				{% for columnname in table %}
 					{% if columnname != "id" %}
-						{% if not loop.first -%}	
-						','.
+						{% if first == 0 -%}	
+							",".
+						{% else %}
+							{% set first = 0 %}
 						{%- endif %}
 						{{escape("$this->"+columnname, table[columnname]["type"])}}.
 					{% endif %}
