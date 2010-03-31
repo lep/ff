@@ -25,7 +25,7 @@
 			do
 			{
 				$id = md5(uniqid(rand(), true));
-			}while (count($this->model->user->sessionidEQ($id)) > 0);
+			}while (count($this->model->user->sessionidEQ($id)->all()) > 0);
 			return $id;
 		}
 		
@@ -65,7 +65,7 @@
 		
 		function authUser($name, $password)
 		{
-			$user = $this->model->user->nameEQ($name)->passwordEQ($this->hashFunction($password))->get();
+			$user = $this->model->user->nameEQ($name)->passwordEQ($this->hashFunction($password.$name))->get();
 			$this->updateSession($user);
 			$user->save();
 		}
