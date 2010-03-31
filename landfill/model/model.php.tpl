@@ -35,7 +35,7 @@
 			{% if not type|isforeign %}
 				{% for op in operations[type] %}
 					function {{columnname}}{{op}}($to){
-						$this->cond[]={{escape("$to", type)}}."{{operations[type][op]}} {{columnname}}";
+						$this->cond[]="{{columnname}} {{operations[type][op]}} ".{{escape("$to", type)}};
 						return $this;
 					}
 					{% endfor %}

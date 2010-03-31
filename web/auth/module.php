@@ -31,9 +31,10 @@
 		
 		function updateSession($user)
 		{
+			global $web_dir;
 			$user->loginexpired = time()+self::LOGIN_TIME;
 			$user->sessionid = $this->generateSessionId($user);
-			setcookie("auth_id", $user->sessionid, time()+self::LOGIN_TIME);
+			setcookie("auth_id", $user->sessionid, time()+self::LOGIN_TIME, "/");
 		}
 		
 		function getUser()
@@ -43,7 +44,7 @@
 			$sessionid = $_COOKIE['auth_id'];
 			try{
 				$user = $this->model->user->sessionidEQ($sessionid)->loginexpiredGT(time())->get();
-				$user->updateSession();
+				$this->updateSession($user);
 				$user->save();
 				return $user;
 			}catch(exection $e)

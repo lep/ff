@@ -23,47 +23,47 @@
 			
 				
 					function idGE($to){
-						$this->cond[]=
+						$this->cond[]="id >= ".
 
 	sql()->escapeInt($to)
 
-.">= id";
+;
 						return $this;
 					}
 					
 					function idGT($to){
-						$this->cond[]=
+						$this->cond[]="id > ".
 
 	sql()->escapeInt($to)
 
-."> id";
+;
 						return $this;
 					}
 					
 					function idEQ($to){
-						$this->cond[]=
+						$this->cond[]="id = ".
 
 	sql()->escapeInt($to)
 
-."= id";
+;
 						return $this;
 					}
 					
 					function idLT($to){
-						$this->cond[]=
+						$this->cond[]="id > ".
 
 	sql()->escapeInt($to)
 
-."> id";
+;
 						return $this;
 					}
 					
 					function idLE($to){
-						$this->cond[]=
+						$this->cond[]="id <= ".
 
 	sql()->escapeInt($to)
 
-."<= id";
+;
 						return $this;
 					}
 					
@@ -85,47 +85,47 @@
 			
 				
 					function loginexpiredGE($to){
-						$this->cond[]=
+						$this->cond[]="loginexpired >= ".
  
  	sql()->escapeInt($to)
 
-.">= loginexpired";
+;
 						return $this;
 					}
 					
 					function loginexpiredGT($to){
-						$this->cond[]=
+						$this->cond[]="loginexpired > ".
  
  	sql()->escapeInt($to)
 
-."> loginexpired";
+;
 						return $this;
 					}
 					
 					function loginexpiredEQ($to){
-						$this->cond[]=
+						$this->cond[]="loginexpired = ".
  
  	sql()->escapeInt($to)
 
-."= loginexpired";
+;
 						return $this;
 					}
 					
 					function loginexpiredLT($to){
-						$this->cond[]=
+						$this->cond[]="loginexpired > ".
  
  	sql()->escapeInt($to)
 
-."> loginexpired";
+;
 						return $this;
 					}
 					
 					function loginexpiredLE($to){
-						$this->cond[]=
+						$this->cond[]="loginexpired <= ".
  
  	sql()->escapeInt($to)
 
-."<= loginexpired";
+;
 						return $this;
 					}
 					
@@ -147,11 +147,11 @@
 			
 				
 					function passwordEQ($to){
-						$this->cond[]=
+						$this->cond[]="password = ".
 
 	sql()->escapeString($to)
 
-."= password";
+;
 						return $this;
 					}
 					
@@ -173,11 +173,11 @@
 			
 				
 					function sessionidEQ($to){
-						$this->cond[]=
+						$this->cond[]="sessionid = ".
 
 	sql()->escapeString($to)
 
-."= sessionid";
+;
 						return $this;
 					}
 					
@@ -199,11 +199,11 @@
 			
 				
 					function nameEQ($to){
-						$this->cond[]=
+						$this->cond[]="name = ".
 
 	sql()->escapeString($to)
 
-."= name";
+;
 						return $this;
 					}
 					

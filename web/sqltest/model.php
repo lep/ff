@@ -23,11 +23,11 @@
 			
 				
 					function contentEQ($to){
-						$this->cond[]=
+						$this->cond[]="content = ".
 
 	sql()->escapeString($to)
 
-."= content";
+;
 						return $this;
 					}
 					
@@ -49,11 +49,11 @@
 			
 				
 					function headlineEQ($to){
-						$this->cond[]=
+						$this->cond[]="headline = ".
 
 	sql()->escapeString($to)
 
-."= headline";
+;
 						return $this;
 					}
 					
@@ -75,47 +75,47 @@
 			
 				
 					function timeGE($to){
-						$this->cond[]=
+						$this->cond[]="time >= ".
  
  	sql()->escapeInt($to)
 
-.">= time";
+;
 						return $this;
 					}
 					
 					function timeGT($to){
-						$this->cond[]=
+						$this->cond[]="time > ".
  
  	sql()->escapeInt($to)
 
-."> time";
+;
 						return $this;
 					}
 					
 					function timeEQ($to){
-						$this->cond[]=
+						$this->cond[]="time = ".
  
  	sql()->escapeInt($to)
 
-."= time";
+;
 						return $this;
 					}
 					
 					function timeLT($to){
-						$this->cond[]=
+						$this->cond[]="time > ".
  
  	sql()->escapeInt($to)
 
-."> time";
+;
 						return $this;
 					}
 					
 					function timeLE($to){
-						$this->cond[]=
+						$this->cond[]="time <= ".
  
  	sql()->escapeInt($to)
 
-."<= time";
+;
 						return $this;
 					}
 					
@@ -137,47 +137,47 @@
 			
 				
 					function idGE($to){
-						$this->cond[]=
+						$this->cond[]="id >= ".
 
 	sql()->escapeInt($to)
 
-.">= id";
+;
 						return $this;
 					}
 					
 					function idGT($to){
-						$this->cond[]=
+						$this->cond[]="id > ".
 
 	sql()->escapeInt($to)
 
-."> id";
+;
 						return $this;
 					}
 					
 					function idEQ($to){
-						$this->cond[]=
+						$this->cond[]="id = ".
 
 	sql()->escapeInt($to)
 
-."= id";
+;
 						return $this;
 					}
 					
 					function idLT($to){
-						$this->cond[]=
+						$this->cond[]="id > ".
 
 	sql()->escapeInt($to)
 
-."> id";
+;
 						return $this;
 					}
 					
 					function idLE($to){
-						$this->cond[]=
+						$this->cond[]="id <= ".
 
 	sql()->escapeInt($to)
 
-."<= id";
+;
 						return $this;
 					}
 					
@@ -716,11 +716,11 @@
 			
 				
 					function nameEQ($to){
-						$this->cond[]=
+						$this->cond[]="name = ".
 
 	sql()->escapeString($to)
 
-."= name";
+;
 						return $this;
 					}
 					
@@ -742,47 +742,47 @@
 			
 				
 					function idGE($to){
-						$this->cond[]=
+						$this->cond[]="id >= ".
 
 	sql()->escapeInt($to)
 
-.">= id";
+;
 						return $this;
 					}
 					
 					function idGT($to){
-						$this->cond[]=
+						$this->cond[]="id > ".
 
 	sql()->escapeInt($to)
 
-."> id";
+;
 						return $this;
 					}
 					
 					function idEQ($to){
-						$this->cond[]=
+						$this->cond[]="id = ".
 
 	sql()->escapeInt($to)
 
-."= id";
+;
 						return $this;
 					}
 					
 					function idLT($to){
-						$this->cond[]=
+						$this->cond[]="id > ".
 
 	sql()->escapeInt($to)
 
-."> id";
+;
 						return $this;
 					}
 					
 					function idLE($to){
-						$this->cond[]=
+						$this->cond[]="id <= ".
 
 	sql()->escapeInt($to)
 
-."<= id";
+;
 						return $this;
 					}
 					
