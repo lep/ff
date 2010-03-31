@@ -6,6 +6,7 @@
 		{% else %}
 			Not logged in
 		{% endif %}
+		{{user.name}}
 		</p>
 			
 		<h2>Log in </h2>
