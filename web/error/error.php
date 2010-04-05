@@ -1,7 +1,7 @@
 <?php
 class error extends Controller{
-	function __construct(){
-		parent::__construct(controller::NOSQL);
+	function __construct($name){
+		parent::__construct($name, controller::NOSQL);
 	}
 	
 	function notallowed($error, $trace){

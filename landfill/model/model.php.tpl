@@ -9,6 +9,8 @@
 	sql()->escapeString({{var}})
 {% elif type == "float"%}
 	sql()->escapeFloat({{var}})
+{% else %}
+	sql()->escapeInt({{var}})
 {% endif%}
 {% endmacro%}
 
@@ -30,23 +32,30 @@
 		{% for columnname in table%}
 			{% set column = table[columnname]%}
 			{% set type = column["type"]%}
-			{% for op in operations[type] %}
-				function {{columnname}}{{op}}($to){
-					$this->cond[]={{escape("$to", type)}}."{{operations[type][op]}} {{columnname}}";
-					return $this;
-				}
-			{% endfor %}
-			{% if orderable[type] %}
-				function orderBy{{columnname|capitalize}}Desc(){
-					$this->ord[] = "{{columnname}} DESC";
-					return $this;
-				}
-				function orderBy{{columnname|capitalize}}Asc(){
-					$this->ord[] = "{{columnname}} ASC";
+			{% if not type|isforeign %}
+				{% for op in operations[type] %}
+					function {{columnname}}{{op}}($to){
+						$this->cond[]="{{columnname}} {{operations[type][op]}} ".{{escape("$to", type)}};
+						return $this;
+					}
+					{% endfor %}
+					{% if orderable[type] %}
+					function orderBy{{columnname|capitalize}}Desc(){
+						$this->ord[] = "{{columnname}} DESC";
+						return $this;
+					}
+					function orderBy{{columnname|capitalize}}Asc(){
+						$this->ord[] = "{{columnname}} ASC";
+						return $this;
+					}
+					{% endif %}
+				
+			{% else %}
+				function {{columnname}}EQ($to){
+					$this->cond[]={{escape("$to->id", "int")}}." =  {{columnname}}";
 					return $this;
 				}
 			{% endif %}
-			
 		{% endfor %}
 		
 		function where(){
@@ -131,7 +140,7 @@
 						{% elif type == "string"%}
 							TEXT
 						{% else %}
-							{{type}}
+							INT
 						{%- endif %}
 					{% if not loop.last -%}
 					,
@@ -154,10 +163,14 @@
 			{% set column = table[columnname]%}
 			{% if  column["type"] == "id"%}
 			private ${{columnname}};
+			{% elif column["type"]|isforeign %}
+			private ${{columnname}};
+			private $_foreign_{{columnname}} = False;
 			{% else%}
 			var ${{columnname}};
 			{%endif%}
 		{% endfor %}
+		
 		
 		
 		{% set first = 1 %}
@@ -171,6 +184,13 @@
 					{% set first = 0 %}
 				{%- endif %}
 				'{{columnname}}'
+			{% elif  column["type"]|isforeign %}
+				{% if first == 0 -%}	
+				,
+				{% else %}
+					{% set first = 0 %}
+				{%- endif %}
+					'{{columnname}}'
 			{%endif%}
 		{% endfor %}
 		);
@@ -183,6 +203,12 @@
 				{% if  column["type"] == "id"%}
 					case '{{columnname}}':
 						return $this->{{columnname}};
+				{% elif column["type"]|isforeign%}
+					case '{{columnname}}':
+						if($this->_foreign_{{columnname}} == false)
+							return $this->_load_{{columnname}}();
+						else
+							return $this->_foreign_{{columnname}};
 				{%endif%}
 			{% endfor %}
 			}
@@ -195,6 +221,40 @@
 		            E_USER_NOTICE);
 		        return null;
 		}
+		
+		function __set($name, $what)
+		{
+			switch($name){
+			{% for columnname in table %}
+				{% set column = table[columnname]%}
+				{% if column["type"]|isforeign%}
+					case '{{columnname}}':
+						$this->_foreign_{{columnname}} = $what;
+						$this->{{columnname}} = $what->id;
+						return;
+				{%endif%}
+			{% endfor %}
+			}
+			
+			$trace = debug_backtrace();
+		        trigger_error(
+		            'Undefined property via __get(): ' . $name .
+		            ' in ' . $trace[0]['file'] .
+		            ' on line ' . $trace[0]['line'],
+		            E_USER_NOTICE);
+		        return null;
+		}
+		
+		{% for columnname in table %}
+			{% set column = table[columnname]%}
+			{% if column["type"]|isforeign%}
+				function _load_{{columnname}}()
+				{
+					$this->_foreign_{{columnname}} = {{prefix}}{{column["type"]}}::objects()->idEQ($this->{{columnname}})->get();
+					return $this->_foreign_{{columnname}};
+				}
+			{%endif%}
+		{% endfor %}
 	
 		function __construct(){
 		{% for columnname in table %}
@@ -216,7 +276,7 @@
 
 			{% endfor %}
 			WHERE id = ".$this->id;
-			sql({{prefix}})->query($sql);
+			sql("{{prefix}}")->query($sql);
 		}
 		
 		function delete()
@@ -261,10 +321,13 @@
 					{% endif %}
 				{% endfor %}
 				) VALUES (".
+				{% set first = 1 %}
 				{% for columnname in table %}
 					{% if columnname != "id" %}
-						{% if not loop.first -%}	
-						','.
+						{% if first == 0 -%}	
+							",".
+						{% else %}
+							{% set first = 0 %}
 						{%- endif %}
 						{{escape("$this->"+columnname, table[columnname]["type"])}}.
 					{% endif %}

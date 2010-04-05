@@ -49,6 +49,9 @@ orderable = {
 
 
 def render(data, prefix=""):
+	def isforeign(typename):
+		return typename not in ["string", "int", "float", "id", "bool"]
+		
 	def phpvar(value):
 		if isinstance(value, basestring):
 			return "\"%s\"" % value
@@ -60,6 +63,9 @@ def render(data, prefix=""):
 		with open("landfill/model/model.php.tpl", "r") as f:
 			content = f.read()
 		return content
+		
+	def tableexists(name):
+		return name in data.keys()
 	
 	for table in data.keys():
 		data[table]["id"] = {
@@ -69,6 +75,8 @@ def render(data, prefix=""):
 		
 	env = Environment(loader=FunctionLoader(template))
 	env.filters["phpvar"] = phpvar
+	env.filters["tableexits"] = tableexists
+	env.filters["isforeign"] = isforeign
 	template = env.get_template("asd")
 	return template.render({
 		"tables": data, 

@@ -35,6 +35,16 @@
 			$class = $controller."_".$model;
 			return self::instantiateClass($class);
 		}
+		
+		static function loadModule($module){
+			$path = "/web/".$module."/module.php";
+			self::loadFile($path);
+			$class = $module."module";
+			if(!class_exists($class))
+				throw new ErrorNotFound("module ".$class.
+					" not found.");
+			return new $class($module);
+		}
 
 		static function executeControllerAction($controller, $action, $args){
 			self::loadController($controller);
@@ -54,7 +64,7 @@
 					"Got ".count($args)." parameter but at least needs ".
 					$parametercount." arguments.");#400 Bad Request
 			
-			$instance = new $controller();
+			$instance = new $controller($controller);
 			call_user_func_array(array($instance, $action), $args);
 		}
 		

@@ -1,6 +1,10 @@
+author:
+    name: string
+
 news:
     content: string
     headline: string
     time: 
         type: int
+    author: author
     
