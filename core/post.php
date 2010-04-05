@@ -1,98 +1,20 @@
 <?php
-	/*class post {
-		private static $nice_names=array(
-
-			'type'=> array(
-				'int'=>FILER_VALIDATE_INT,
-				'bool'=>FILTER_VALIDATE_BOOLEAN,
-				'float'=>FILTER_VALIDATE_FLOAT,
-				'url'=>FILTER_VALIDATE_URL,
-				'email'=>FILTER_VALIDATE_EMAIL,
-				'string'=>FILTER_DEFAULT
-			),
-
-			'filter' => array(
-				'sanitize' => FILTER_SANITIZE_STRING,
-				'escape' => FILTER_SANITIZE_ENCODED
-			)
-
-			/*'flag'=>array(
-				
-			//)//*
-		);
-
-		private $form=array();
-
-		private static function process(&$array, $data){
-			if(array_key_exists($vs, self::$nice_names['type'])){
-		    	$array['type'] |= self::$nice_names['type'][$vs];
-			}#else throw error
-
-		}
-
-		function __construct($controller_name){
-			global $server_dir;
-			$yaml=sfYaml::load( $server_dir .'/web/'. 
-								$controller_name .'/form.yml');
-
-			foreach($yaml as $form_name=>$form){
-				foreach($form as $name=>$data){
-				
-					if(is_array($data)){
-						foreach($data as $k=>$v){
-							if($k === 'type'){
-								$this->form[$form_name][$name]['type'] |= 
-									self::$nice_names['type'][$v];
-							}elseif($k === 'filter'){
-								if(is_array($v)){
-									foreach($v as $i){
-										$this->form[$form_name][$name]['type'] |= 
-											self::$nice_names['type'][$i];
-									}
-								}else{
-									$this->form[$form_name][$name]['type'] |= 
-										self::$nice_names['type'][$v];
-								}
-							}
-						}
-					}else{
-						#TODO: check if $data exists as a key
-						$this->form[$form_name][$name] = self::$nice_names[$data];
-					}
-				
-				
-				}
-			}
-
-			/*
-			$data=sfYaml::load($yaml);
-			
-			$type_array=array();
-
-			foreach($data as $k=>$v){
-				$type_array[$k]=array();
-				
-				foreach($v as $ks=>$vs){
-					if(is_array($vs)){
-						foreach($vs as $kss=>$vss){
-						}
-					}else{
-						
-					}
-
-				}
-			}
-			///
-		}
-
-
-	}
-*/
+	error_Reporting(E_ALL);
 
 	class post /*implements ArrayAccess*/ {
-		private static $nice_names=array();
+		private static $nice_names=array(
+			'string'	=> FILTER_DEFAULT,
+			'int'		=> FILTER_VALIDATE_INT,
+			'float'		=> FILTER_VALIDATE_FLOAT,
+			'url'		=> FILTER_VALIDATE_URL,
+			'email'		=> FILTER_VALIDATE_EMAIL,
+			'sanitize'	=> FILTER_SANITIZE_STRING,
+			'escape'	=> FILTER_SANITIZE_SPECIAL_CHARS
+		
+		);
 	
 		private $form=array();
+		private $hasForm=true;
 
 		private function parseFields($name, $fields){
 			foreach($fields as $name_=>$data){
@@ -102,7 +24,7 @@
 						$data['filter']=array($data['filter']);
 					}
 
-					$this->form=$data;
+					$this->form[$name][$name_]=$data;
 				}else{
 					$this->form[$name][$name_]=array(
 						'type'=>$data,
@@ -114,11 +36,11 @@
 		}
 
 		private function checkDefault($k, $v){
-			if(! isset($_POST[$k])){
+			if(! isset($_POST[$k]) or empty($_POST[$k]) ){
             	if(isset($v['default'])){
                 	return $v['default'];
 				}else{
-                	throw some Exception('Required value not set');
+                	throw new Exception('Required value not set');
 				}
 			}else{
             	return $_POST[$k];
@@ -129,9 +51,14 @@
 			if(! isset($v['type'])){
             	throw new Exception('Type required');
             }
+			if(empty($value) and isset($v['default'])){
+				return $value;
+			}
 
-            $tmp=filter_var($value, self::$nice_names[$v['type']]);
-            if($tmp===false){
+            $tmp=filter_var($value, 
+							self::$nice_names[$v['type']], 
+							FILTER_NULL_ON_FAILURE);
+            if($tmp===null){
                 throw new Exception('Type error');
             }
             return $tmp;
@@ -142,10 +69,14 @@
 				throw new Exception('Unknown Filter');
 			}
 			return 
-			 filter_var($value, FILTER_FLAG_NONE, self::$nice_names[$filter]);
+			 filter_var($value, self::$nice_names[$filter]);
 		}
 		
 		private function checkBounds($value, $min, $max){
+			if(! isset($min) && ! isset($max)){
+				return;
+			}
+
 			$type=gettype($value);
 			if($type=='string')
 				$value=strlen($value);
@@ -184,9 +115,16 @@
 		}
 
 		function __get($name){
+			if(! $this->hasForm){
+				throw new Exception('Post has no definioton');
+			}
+
+			if(! isset($this->form[$name])){
+				throw new Exception('Post-data is non-existant');
+			}
+
 			$ret=array();
 			foreach($this->form[$name] as $k=>$v){
-				
 				#check for default values
 				$ret[$k]=$this->checkDefault($k, $v);
 
@@ -194,8 +132,10 @@
 				$ret[$k]=$this->checkType($ret[$k], $k, $v);				
 
 				#filter
-				foreach($v['filter'] as $filter){
-					$ret[$k]=$this->applyFilter($ret[$k], $filter);
+				if(isset($v['filter'])){
+					foreach($v['filter'] as $filter){
+						$ret[$k]=$this->applyFilter($ret[$k], $filter);
+					}
 				}
 				
 				#min-max
@@ -208,15 +148,22 @@
 		}
 
 
-		function __construct(){
+		function __construct($controller_name){
 			global $server_dir;
 			
-			$yaml=sfYaml::load( $server_dir .'/web/'. 
-								$controller_name .'/form.yml');
-		
+			$path = $server_dir .'/web/'. 
+					$controller_name .'/form.yml';
+			if(! file_exists($path)){
+				$this->hasForm=false;
+				return;
+			}
+
+			$yaml=sfYaml::load($path);
+
 			foreach($yaml as $name=>$fields){
 				$this->parseFields($name, $fields);
 			}
+
 		}
 	}
 

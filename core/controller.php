@@ -45,6 +45,7 @@
 	
 	abstract class controller extends basecontroller{
 		protected $template;
+		protected $postData;
 		private $ownmodule;
 		
 		const NOTEMPLATE = 0x2;
@@ -72,6 +73,10 @@
 					$this->ownmodule = dispatcher::loadModule($name);
 				$this->module = new modulehelper();
 			}
+
+			#TODO: check if this is alright...
+			#TODO: maybe think for a better name...
+			$this->postData = new post($name);
 			
 		}
 		
