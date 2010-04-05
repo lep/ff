@@ -11,6 +11,8 @@
 		
 		function createUser($name, $password)
 		{
+			if (count($this->model->user->nameLIKE($name)->all())>0)
+				throw new Exception("user exists");
 			$user = $this->model->user->create();
 			$user->name = $name;
 			$pass = $password.$name;
@@ -66,8 +68,6 @@
 		
 		function authUser($name, $password)
 		{
-			if (count($this->model->user->nameLIKE($name)->all())>0)
-				throw new Exception("user exists");
 			$user = $this->model->user->nameEQ($name)->passwordEQ($this->hashFunction($password.$name))->get();
 			$this->updateSession($user);
 			$user->save();
