@@ -14,6 +14,7 @@
 	include_once($server_dir."core/dispatch.php");
 	include_once($server_dir."core/sql.php");
 	include_once($server_dir."core/config.php");
+	include_once($server_dir."core/post.php");
 	
 	spl_autoload_register('dispatcher::loadController');
 	

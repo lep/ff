@@ -1,0 +1,25 @@
+post:
+  title:
+    type: string
+    default: empty title
+    filter: sanitize
+
+  content:
+    type: string
+    filter: escape
+
+register:
+  name:
+    type: string
+    pattern: /^[-\w_\d]+$/
+    max: 10
+
+  email:
+    type: email
+    default: []
+
+  password1:
+   type: string
+   min: 6
+
+  password2: string

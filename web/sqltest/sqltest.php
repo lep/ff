@@ -28,10 +28,6 @@
 		
 		function install()
 		{
-			$this->model->news->dropTable();
-			$this->model->news->createTable();
-			
-			$this->model->author->dropTable();
 			$this->model->author->createTable();
 			$a = $this->model->author->create();
 			$a->name = "peter";
