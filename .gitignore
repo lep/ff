@@ -1,3 +1,5 @@
 /tmp/twig/*
 *.pyc
+*.db
+__init__.py
 
