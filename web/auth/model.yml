@@ -7,3 +7,6 @@ user:
     loginexpired:
         type: int
         default: 0
+    test:
+        type: ab.b
+            

@@ -111,7 +111,10 @@
             $path = "/web/".$module."/module.php";
             self::loadFile($path);
             $class = $module."module";
-        	return self::instantiateClass($class);
+        	if(!class_exists($class))
+				throw new ErrorNotFound("module ".$class.
+					" not found.");
+			return new $class($module);
 		}
 
 	}

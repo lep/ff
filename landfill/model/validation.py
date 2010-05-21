@@ -44,7 +44,7 @@ class YAMLValidator(object):
                 % (value, type))
     
     def validateType(self, typename):
-        if typename not in ["string", "int", "float", "id", "bool"] and typename not in self.data.keys():
+        if typename not in ["string", "int", "float", "id", "bool"] and typename not in self.data.keys() and typename.count(".") != 1:
             self.fault("Unknown column type %s" % typename)
     
     def validateColumn(self, name, column):

@@ -52,6 +52,15 @@ def render(data, prefix=""):
 	def isforeign(typename):
 		return typename not in ["string", "int", "float", "id", "bool"]
 		
+	def ismoreforeign(typename):
+	        return isforeign(typename) and len(typename.split(".")) == 2
+	        
+	def foreignpart(typename):
+	        return typename.split(".")[1]
+	        
+	def moreforeignpart(typename):
+	        return typename.split(".")[0]
+		
 	def phpvar(value):
 		if isinstance(value, basestring):
 			return "\"%s\"" % value
@@ -77,6 +86,9 @@ def render(data, prefix=""):
 	env.filters["phpvar"] = phpvar
 	env.filters["tableexits"] = tableexists
 	env.filters["isforeign"] = isforeign
+	env.filters["ismoreforeign"] = ismoreforeign
+	env.filters["foreignpart"] = foreignpart
+	env.filters["moreforeignpart"] = moreforeignpart
 	template = env.get_template("asd")
 	return template.render({
 		"tables": data, 

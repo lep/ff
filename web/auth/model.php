@@ -22,132 +22,8 @@
 			
 			
 				
-					function idGE($to){
-						$this->cond[]="id >= ".
-
-	sql()->escapeInt($to)
-
-;
-						return $this;
-					}
-					
-					function idGT($to){
-						$this->cond[]="id > ".
-
-	sql()->escapeInt($to)
-
-;
-						return $this;
-					}
-					
-					function idEQ($to){
-						$this->cond[]="id = ".
-
-	sql()->escapeInt($to)
-
-;
-						return $this;
-					}
-					
-					function idLT($to){
-						$this->cond[]="id > ".
-
-	sql()->escapeInt($to)
-
-;
-						return $this;
-					}
-					
-					function idLE($to){
-						$this->cond[]="id <= ".
-
-	sql()->escapeInt($to)
-
-;
-						return $this;
-					}
-					
-					
-					function orderByIdDesc(){
-						$this->ord[] = "id DESC";
-						return $this;
-					}
-					function orderByIdAsc(){
-						$this->ord[] = "id ASC";
-						return $this;
-					}
-					
-				
-			
-		
-			
-			
-			
-				
-					function loginexpiredGE($to){
-						$this->cond[]="loginexpired >= ".
- 
- 	sql()->escapeInt($to)
-
-;
-						return $this;
-					}
-					
-					function loginexpiredGT($to){
-						$this->cond[]="loginexpired > ".
- 
- 	sql()->escapeInt($to)
-
-;
-						return $this;
-					}
-					
-					function loginexpiredEQ($to){
-						$this->cond[]="loginexpired = ".
- 
- 	sql()->escapeInt($to)
-
-;
-						return $this;
-					}
-					
-					function loginexpiredLT($to){
-						$this->cond[]="loginexpired > ".
- 
- 	sql()->escapeInt($to)
-
-;
-						return $this;
-					}
-					
-					function loginexpiredLE($to){
-						$this->cond[]="loginexpired <= ".
- 
- 	sql()->escapeInt($to)
-
-;
-						return $this;
-					}
-					
-					
-					function orderByLoginexpiredDesc(){
-						$this->ord[] = "loginexpired DESC";
-						return $this;
-					}
-					function orderByLoginexpiredAsc(){
-						$this->ord[] = "loginexpired ASC";
-						return $this;
-					}
-					
-				
-			
-		
-			
-			
-			
-				
-					function passwordGT($to){
-						$this->cond[]="password > ".
+					function nameGT($to){
+						$this->cond[]="name > ".
 
 	sql()->escapeString($to)
 
@@ -155,8 +31,8 @@
 						return $this;
 					}
 					
-					function passwordLIKE($to){
-						$this->cond[]="password  LIKE  ".
+					function nameLIKE($to){
+						$this->cond[]="name  LIKE  ".
 
 	sql()->escapeString($to)
 
@@ -164,8 +40,8 @@
 						return $this;
 					}
 					
-					function passwordLT($to){
-						$this->cond[]="password > ".
+					function nameLT($to){
+						$this->cond[]="name > ".
 
 	sql()->escapeString($to)
 
@@ -173,8 +49,8 @@
 						return $this;
 					}
 					
-					function passwordGE($to){
-						$this->cond[]="password >= ".
+					function nameGE($to){
+						$this->cond[]="name >= ".
 
 	sql()->escapeString($to)
 
@@ -182,8 +58,8 @@
 						return $this;
 					}
 					
-					function passwordLE($to){
-						$this->cond[]="password <= ".
+					function nameLE($to){
+						$this->cond[]="name <= ".
 
 	sql()->escapeString($to)
 
@@ -191,8 +67,8 @@
 						return $this;
 					}
 					
-					function passwordEQ($to){
-						$this->cond[]="password = ".
+					function nameEQ($to){
+						$this->cond[]="name = ".
 
 	sql()->escapeString($to)
 
@@ -201,12 +77,12 @@
 					}
 					
 					
-					function orderByPasswordDesc(){
-						$this->ord[] = "password DESC";
+					function orderByNameDesc(){
+						$this->ord[] = "name DESC";
 						return $this;
 					}
-					function orderByPasswordAsc(){
-						$this->ord[] = "password ASC";
+					function orderByNameAsc(){
+						$this->ord[] = "name ASC";
 						return $this;
 					}
 					
@@ -288,8 +164,83 @@
 			
 			
 				
-					function nameGT($to){
-						$this->cond[]="name > ".
+					function loginexpiredGE($to){
+						$this->cond[]="loginexpired >= ".
+ 
+ 	sql()->escapeInt($to)
+
+;
+						return $this;
+					}
+					
+					function loginexpiredGT($to){
+						$this->cond[]="loginexpired > ".
+ 
+ 	sql()->escapeInt($to)
+
+;
+						return $this;
+					}
+					
+					function loginexpiredEQ($to){
+						$this->cond[]="loginexpired = ".
+ 
+ 	sql()->escapeInt($to)
+
+;
+						return $this;
+					}
+					
+					function loginexpiredLT($to){
+						$this->cond[]="loginexpired > ".
+ 
+ 	sql()->escapeInt($to)
+
+;
+						return $this;
+					}
+					
+					function loginexpiredLE($to){
+						$this->cond[]="loginexpired <= ".
+ 
+ 	sql()->escapeInt($to)
+
+;
+						return $this;
+					}
+					
+					
+					function orderByLoginexpiredDesc(){
+						$this->ord[] = "loginexpired DESC";
+						return $this;
+					}
+					function orderByLoginexpiredAsc(){
+						$this->ord[] = "loginexpired ASC";
+						return $this;
+					}
+					
+				
+			
+		
+			
+			
+			
+				function testEQ($to){
+					$this->cond[]=
+ 
+ 	sql()->escapeInt($to->id)
+
+." =  test";
+					return $this;
+				}
+			
+		
+			
+			
+			
+				
+					function passwordGT($to){
+						$this->cond[]="password > ".
 
 	sql()->escapeString($to)
 
@@ -297,8 +248,8 @@
 						return $this;
 					}
 					
-					function nameLIKE($to){
-						$this->cond[]="name  LIKE  ".
+					function passwordLIKE($to){
+						$this->cond[]="password  LIKE  ".
 
 	sql()->escapeString($to)
 
@@ -306,8 +257,8 @@
 						return $this;
 					}
 					
-					function nameLT($to){
-						$this->cond[]="name > ".
+					function passwordLT($to){
+						$this->cond[]="password > ".
 
 	sql()->escapeString($to)
 
@@ -315,8 +266,8 @@
 						return $this;
 					}
 					
-					function nameGE($to){
-						$this->cond[]="name >= ".
+					function passwordGE($to){
+						$this->cond[]="password >= ".
 
 	sql()->escapeString($to)
 
@@ -324,8 +275,8 @@
 						return $this;
 					}
 					
-					function nameLE($to){
-						$this->cond[]="name <= ".
+					function passwordLE($to){
+						$this->cond[]="password <= ".
 
 	sql()->escapeString($to)
 
@@ -333,8 +284,8 @@
 						return $this;
 					}
 					
-					function nameEQ($to){
-						$this->cond[]="name = ".
+					function passwordEQ($to){
+						$this->cond[]="password = ".
 
 	sql()->escapeString($to)
 
@@ -343,12 +294,74 @@
 					}
 					
 					
-					function orderByNameDesc(){
-						$this->ord[] = "name DESC";
+					function orderByPasswordDesc(){
+						$this->ord[] = "password DESC";
 						return $this;
 					}
-					function orderByNameAsc(){
-						$this->ord[] = "name ASC";
+					function orderByPasswordAsc(){
+						$this->ord[] = "password ASC";
+						return $this;
+					}
+					
+				
+			
+		
+			
+			
+			
+				
+					function idGE($to){
+						$this->cond[]="id >= ".
+
+	sql()->escapeInt($to)
+
+;
+						return $this;
+					}
+					
+					function idGT($to){
+						$this->cond[]="id > ".
+
+	sql()->escapeInt($to)
+
+;
+						return $this;
+					}
+					
+					function idEQ($to){
+						$this->cond[]="id = ".
+
+	sql()->escapeInt($to)
+
+;
+						return $this;
+					}
+					
+					function idLT($to){
+						$this->cond[]="id > ".
+
+	sql()->escapeInt($to)
+
+;
+						return $this;
+					}
+					
+					function idLE($to){
+						$this->cond[]="id <= ".
+
+	sql()->escapeInt($to)
+
+;
+						return $this;
+					}
+					
+					
+					function orderByIdDesc(){
+						$this->ord[] = "id DESC";
+						return $this;
+					}
+					function orderByIdAsc(){
+						$this->ord[] = "id ASC";
 						return $this;
 					}
 					
@@ -441,18 +454,7 @@
 			$sql = "CREATE TABLE {user} (
 				
 					
-						id
-						
-							SERIAL
-						
-					,
-					
-						loginexpired
-						INT
-						
-					,
-					
-						password
+						name
 						
 							TEXT
 						
@@ -464,9 +466,25 @@
 						
 					,
 					
-						name
+						loginexpired
+						INT
+						
+					,
+					
+						test
+						
+							INT
+					,
+					
+						password
 						
 							TEXT
+						
+					,
+					
+						id
+						
+							SERIAL
 						
 					
 				)";
@@ -485,17 +503,7 @@
 		
 			
 			
-			private $id;
-			
-		
-			
-			
-			var $loginexpired;
-			
-		
-			
-			
-			var $password;
+			var $name;
 			
 		
 			
@@ -505,7 +513,23 @@
 		
 			
 			
-			var $name;
+			var $loginexpired;
+			
+		
+			
+			
+			private $test;
+			private $_foreign_test = False;
+			
+		
+			
+			
+			var $password;
+			
+		
+			
+			
+			private $id;
 			
 		
 		
@@ -516,21 +540,28 @@
 		
 			
 			
+		
+			
+			
+		
+			
+			
+		
+			
+			
 				
 					
+					'test'
+			
+		
+			
+			
+		
+			
+			
+				,
+				
 				'id'
-			
-		
-			
-			
-		
-			
-			
-		
-			
-			
-		
-			
 			
 		
 		);
@@ -541,20 +572,29 @@
 			
 				
 				
+			
+				
+				
+			
+				
+				
+			
+				
+				
+					case 'test':
+						if($this->_foreign_test == false)
+							return $this->_load_test();
+						else
+							return $this->_foreign_test;
+				
+			
+				
+				
+			
+				
+				
 					case 'id':
 						return $this->id;
-				
-			
-				
-				
-			
-				
-				
-			
-				
-				
-			
-				
 				
 			
 			}
@@ -583,6 +623,14 @@
 			
 				
 				
+					case 'test':
+						$this->_foreign_test = $what;
+						$this->test = $what->id;
+						return;
+				
+			
+				
+				
 			
 				
 				
@@ -601,16 +649,35 @@
 		
 			
 			
-		
-			
 			
 		
 			
 			
+			
 		
 			
 			
+			
 		
+			
+			
+			
+				function _load_test()
+				{
+					$this->_foreign_test = 
+					
+						dispatcher::loadModel("ab", "b")->objects()
+					
+					->idEQ($this->test)->get();
+					return $this->_foreign_test;
+				}
+			
+		
+			
+			
+			
+		
+			
 			
 			
 		
@@ -619,7 +686,10 @@
 		
 			
 			
-				$this->id = False;
+		
+			
+			
+				$this->sessionid = "empty";
 			
 		
 			
@@ -632,10 +702,10 @@
 		
 			
 			
-				$this->sessionid = "empty";
-			
 		
 			
+			
+				$this->id = False;
 			
 		
 		}
@@ -645,31 +715,9 @@
 			
 			
 				
-				id =" .
+				name =" .
 
-	sql()->escapeInt($this->id)
-
-."
-
-			
-			
-				
-					,
-				
-				loginexpired =" .
- 
- 	sql()->escapeInt($this->loginexpired)
-
-."
-
-			
-			
-				
-					,
-				
-				password =" .
-
-	sql()->escapeString($this->password)
+	sql()->escapeString($this->name)
 
 ."
 
@@ -689,9 +737,42 @@
 				
 					,
 				
-				name =" .
+				loginexpired =" .
+ 
+ 	sql()->escapeInt($this->loginexpired)
 
-	sql()->escapeString($this->name)
+."
+
+			
+			
+				
+					,
+				
+				test =" .
+
+	sql()->escapeInt($this->test)
+
+."
+
+			
+			
+				
+					,
+				
+				password =" .
+
+	sql()->escapeString($this->password)
+
+."
+
+			
+			
+				
+					,
+				
+				id =" .
+
+	sql()->escapeInt($this->id)
 
 ."
 
@@ -714,15 +795,17 @@
 			$object = new self();
 			#this does no checking at all. Don't be evil!
 			
-				$object->id = $row['id'];
-			
-				$object->loginexpired = $row['loginexpired'];
-			
-				$object->password = $row['password'];
+				$object->name = $row['name'];
 			
 				$object->sessionid = $row['sessionid'];
 			
-				$object->name = $row['name'];
+				$object->loginexpired = $row['loginexpired'];
+			
+				$object->test = $row['test'];
+			
+				$object->password = $row['password'];
+			
+				$object->id = $row['id'];
 			
 			return $object;
 		}
@@ -741,17 +824,9 @@
 				
 				
 					
-				
-					
 						
 							
-						loginexpired
-					
-				
-					
-						,
-						
-						password
+						name
 					
 				
 					
@@ -763,30 +838,32 @@
 					
 						,
 						
-						name
+						loginexpired
+					
+				
+					
+						,
+						
+						test
+					
+				
+					
+						,
+						
+						password
+					
+				
 					
 				
 				) VALUES (".
 				
 				
 					
-				
-					
 						
 							
 						
- 
- 	sql()->escapeInt($this->loginexpired)
 
-.
-					
-				
-					
-						",".
-						
-						
-
-	sql()->escapeString($this->password)
+	sql()->escapeString($this->name)
 
 .
 					
@@ -805,10 +882,32 @@
 						",".
 						
 						
-
-	sql()->escapeString($this->name)
+ 
+ 	sql()->escapeInt($this->loginexpired)
 
 .
+					
+				
+					
+						",".
+						
+						
+
+	sql()->escapeInt($this->test)
+
+.
+					
+				
+					
+						",".
+						
+						
+
+	sql()->escapeString($this->password)
+
+.
+					
+				
 					
 						
 				")";

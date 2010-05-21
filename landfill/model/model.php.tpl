@@ -247,10 +247,17 @@
 		
 		{% for columnname in table %}
 			{% set column = table[columnname]%}
-			{% if column["type"]|isforeign%}
+			{% set type = column["type"] %}
+			{% if type|isforeign%}
 				function _load_{{columnname}}()
 				{
-					$this->_foreign_{{columnname}} = {{prefix}}{{column["type"]}}::objects()->idEQ($this->{{columnname}})->get();
+					$this->_foreign_{{columnname}} = 
+					{%  if type|ismoreforeign %}
+						dispatcher::loadModel("{{type|moreforeignpart}}", "{{type|foreignpart}}")->objects()
+					{% else%}
+						{{prefix}}{{column["type"]}}::objects()
+					{% endif %}
+					->idEQ($this->{{columnname}})->get();
 					return $this->_foreign_{{columnname}};
 				}
 			{%endif%}
