@@ -56,7 +56,7 @@
 				if(count($parts) == 1){
 					$controller	=	$parts[0];
 					$action		= 	"index";
-				}elseif(count($parts) > 2){
+				}elseif(count($parts) >= 2){
 					$controller	=	$parts[0];
 					$action		=	$parts[1];
 					$args		=	array_slice($parts, 2);
