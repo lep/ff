@@ -15,7 +15,7 @@
 	include_once($server_dir."core/sql.php");
 	include_once($server_dir."core/config.php");
 	include_once($server_dir."core/post.php");
-	
+	include_once($server_dir."lib/HTMLPurifier/HTMLPurifier.auto.php");
 	spl_autoload_register('dispatcher::loadController');
 	
 	try{

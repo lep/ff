@@ -10,7 +10,7 @@
 		</p>
 			
 		<h2>Log in </h2>
-		<form action="login" method="post" accept-charset="utf-8">
+		<form action="{{dir.web}}/auth/login/" method="post" accept-charset="utf-8">
 			<input type="text" name="name"> <br/>
 			<input type="password" name="password"><br/>
 			<p><input type="submit" value="Continue &rarr;"></p>
@@ -18,7 +18,7 @@
 			
 		
 		<h2>Create new user</h2>
-		<form action="create" method="post">
+		<form action="{{dir.web}}/auth/create/" method="post">
 			<input type="text" name="name"/><br/>
 			<input type="password" name="password" /><br/>
 			<input type="submit" />

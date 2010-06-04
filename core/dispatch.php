@@ -2,7 +2,7 @@
 	error_reporting(E_ALL);
 
 	class dispatcher {
-		private static $method_unknown = "_WTF_NICHT_GEFUNDEN";
+		private static $method_unknown = "missing";
 	
 		static function executeControllerAction($controller, $action, $args){
 			self::loadController($controller);
