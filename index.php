@@ -2,9 +2,8 @@
 	session_start();
 	ini_set('display_errors',1);
 	error_Reporting(E_ALL);
-	
 	$server_dir=realpath(dirname(__FILE__)) .'/';
-	$web_dir=realpath(dirname($_SERVER['PHP_SELF'])) .'/';
+	$web_dir=dirname($_SERVER['PHP_SELF']).'/';
 	#include_once($server_dir."config.php");
 	include_once($server_dir."core/exception.php");
 	include_once($server_dir."core/template.php");

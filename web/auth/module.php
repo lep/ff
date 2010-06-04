@@ -36,7 +36,7 @@
 			global $web_dir;
 			$user->loginexpired = time()+self::LOGIN_TIME;
 			$user->sessionid = $this->generateSessionId($user);
-			setcookie("auth_id", $user->sessionid, time()+self::LOGIN_TIME);
+			setcookie("auth_id", $user->sessionid, time()+self::LOGIN_TIME, $web_dir);
 		}
 		
 		function getUser()

@@ -19,10 +19,9 @@
 		
 		function login()
 		{
-			if ($this->authUser($_POST['name'], $_POST['password']))
-				print "ok";
-			else
-				print "wrong";
+			$this->authUser($_POST['name'], $_POST['password']);
+			print "ok";
+
 		}
 	}
 
