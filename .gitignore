@@ -1,5 +1,4 @@
 /tmp/twig/*
 *.pyc
 *.db
-__init__.py
 *.DS_Store
