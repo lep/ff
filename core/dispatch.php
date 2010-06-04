@@ -2,29 +2,49 @@
 	error_reporting(E_ALL);
 
 	class dispatcher {
-		private static $method_unknown = "missing";
+		private static $method_unknown = "wildcard";
 	
+		static function controllerExists($controller){
+			try{
+				self::loadController($controller);
+				return true;
+			}
+			catch(ErrorNotFound $err)
+			{
+				return false;
+			}
+		}
+		
 		static function executeControllerAction($controller, $action, $args){
-			self::loadController($controller);
-
-			if(! class_exists($controller)){
-				if(method_exists("main", self::$method_unknown)){
-					$controller	=	"main";
-					$action		=	self::$method_unknown;
-					array_unshift($args, $controller, $action);
-				}else{
-					throw new ErrorNotFound("Controller ". $controller .
-					                    " not found.");
+			
+			if (self::controllerExists($controller))
+			{
+				if (!method_exists($controller, $action))
+				{
+					if(method_exists($controller, self::$method_unknown))
+					{
+						array_unshift($args, $action);
+						$action = self::$method_unknown;
+					}
+					else
+					{
+						throw new ErrorNotFound("Method ".$action. " could not be found in Controller ".$controller);
+					}
 				}
-			}elseif(! method_exists($controller, $action)){
-				if(method_exists($controller, self::$method_unknown)){
-                    $action     =   self::$method_unknown;
+			}
+			else
+			{
+				//fallback to unkown controller method in main
+				if (self::controllerExists("main") && method_exists("main", self::$method_unknown))
+				{
 					array_unshift($args, $controller, $action);
-                }else{
-                	throw new ErrorNotFound("Classmethod ". $controller
-				                     .".".  $action ." not found.");
+					$controller = "main";
+					$action = self::$method_unknown;
 				}
-	
+				else
+				{
+					throw new ErrorNotFound("Controller ".$controller." can not be loaded.");
+				}
 			}
 
 			#check for parameter-count
@@ -91,6 +111,8 @@
 
             $path = "/web/".$controller."/".$controller.".php";
             self::loadFile($path);
+			if (!class_exists($controller))
+				throw new ErrorNotFound("Controllerclass ".$controller." does not exist in $path.");
         }
 
         static function instantiateClass($class){
