@@ -51,7 +51,7 @@
 				return $user;
 			}catch(SqlError $e)
 			{
-				setcookie("auth_id", "äh", 0);
+				setcookie("auth_id", "äh", 0, $web_dir);
 				return null;
 			}
 
