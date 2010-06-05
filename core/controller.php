@@ -80,6 +80,10 @@
 			
 		}
 		
+		function method(){
+			return $_SERVER['REQUEST_METHOD'];
+		}
+		
 		function __call($name, $args)
 		{
 			return call_user_func_array(array($this->ownmodule, $name), $args);
