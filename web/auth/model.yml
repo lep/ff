@@ -1,12 +1,13 @@
 user:
     name: string
     password: string
-    sessionid: 
+    token:
         type: string
         default: empty
+    tokenexpirte:
+        type: int
+        default: 0
     loginexpired:
         type: int
         default: 0
-    test:
-        type: ab.b
             
