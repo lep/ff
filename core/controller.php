@@ -80,9 +80,11 @@
 			
 		}
 		
-		function method(){
+		function method()
+		{
 			return $_SERVER['REQUEST_METHOD'];
 		}
+		
 		
 		function __call($name, $args)
 		{

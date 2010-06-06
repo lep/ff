@@ -2,3 +2,4 @@
 *.pyc
 *.db
 *.DS_Store
+lib/HTMLPurifier/HTMLPurifier/DefinitionCache/Serializer/HTML/*
