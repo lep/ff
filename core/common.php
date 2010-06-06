@@ -14,6 +14,11 @@
 		header("Location: $to");
 	}
 	
+	function local_redirect($to){
+		global $web_dir;
+		header("Location: ".$web_dir."$to");
+	}
+	
 	function post_only(){
 		if($_SERVER['REQUEST_METHOD']!='POST')
 			error405('POST');
