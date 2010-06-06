@@ -1,5 +1,0 @@
-article:
-    title: text
-    content: text
-    date: int
-    author: auth.user
