@@ -1,0 +1,5 @@
+filter:
+  text:
+    type: string
+    htmlwhitelist: "h1,h2"
+

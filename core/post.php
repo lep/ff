@@ -108,6 +108,18 @@
 				$this->regexHelper($value, $regex);
 			}
 		}#where
+		
+		private function filterHTML($value, $pattern)
+		{
+			if (!isset($pattern))
+				return $value;
+			if (gettype($value) != "string")
+				throw new Exception("Only strings can be filtered".
+									" with ".$pattern);#
+			return cleanHTML($value, $pattern);
+				
+		}
+		
 		private function regexHelper($value, $r){
 			if(! preg_match($r, $value)){
 				throw new Exception('Value does not match pattern');
@@ -143,6 +155,7 @@
 				
 				#regex
 				$this->checkRegex($ret[$k], @$v['pattern']);
+				$ret[$k] = $this->filterHTML($ret[$k], @$v['htmlwhitelist']); 
 			}
 			return $ret;
 		}

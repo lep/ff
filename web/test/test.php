@@ -1,6 +1,9 @@
 <?php
 	class test extends controller
 	{
+		function index(){
+			$this->template->output("index.tpl");
+		}
 		function a(){
 			print "hallo welt";
 		}
@@ -18,6 +21,12 @@
 			echo $purifier->purify("<h1> <h2>");
 			echo $_GET['A'];
 			
+		}
+		
+		function filter(){
+		  $data = $this->postData->filter;
+		  header("Content-type: text/plain");
+		  print_r($data);
 		}
 	}
 
