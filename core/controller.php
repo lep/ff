@@ -85,15 +85,6 @@
 			return $_SERVER['REQUEST_METHOD'];
 		}
 		
-		function cleanHTML($text, $filter="")
-		{
-			config = HTMLPurifier_Config::createDefault();
-			$config->set('Core.Encoding', 'utf-8'); // replace with your encoding
-			$config->set('HTML.Doctype', 'HTML 4.01 Transitional'); // replace with your doctype
-			$config->set('HTML.Allowed', $filter);
-			$purifier = new HTMLPurifier($config);
-			echo $purifier->purify($text);
-		}
 		
 		function __call($name, $args)
 		{
