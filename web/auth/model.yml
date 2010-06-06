@@ -1,13 +1,10 @@
 user:
     name: string
     password: string
-    token:
+    sessionid:
         type: string
         default: empty
-    tokenexpirte:
-        type: int
-        default: 0
     loginexpired:
         type: int
         default: 0
-            
+
