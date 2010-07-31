@@ -61,9 +61,8 @@
 				$this->template->assign("dir", 
 							array('server'=>$server_dir, 
 							      'web'=>$web_dir,
-							      'controller'=>$server_dir.
-							         "/web/".$name.
-							         "/template/"
+							      'controller'=>$web_dir.
+							         "web/".$name
 							));
 			}
 			if (($opts & self::NOMODULE) == 0)
